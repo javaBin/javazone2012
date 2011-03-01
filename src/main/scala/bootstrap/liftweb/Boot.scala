@@ -50,7 +50,7 @@ class Boot {
       cmsClient.close
     })
 
-    // Twitter searc integration
+    // Twitter search integration
     println("Props.get(twitter.search)=" + Props.get("twitter.search"))
     val searchUri = new URI(Props.get("twitter.search").open_!)
     val logger = Logger("twitter.client")
