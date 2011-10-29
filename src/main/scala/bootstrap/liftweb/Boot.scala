@@ -17,7 +17,7 @@ import org.joda.time.Minutes._
 import scala.util.Random
 
 class Boot {
-  def boot {
+  def boot() {
     LiftRules.configureLogging = LoggingAutoConfigurer()
 
     val localFile = () => {
@@ -40,15 +40,13 @@ class Boot {
     val cmsLogger = new CmsLogger {
       private val logger = net.liftweb.common.Logger("CMS")
 
-      def info(message: String) = logger.info(message)
+      def info(message: String) { logger.info(message) }
 
-      def warn(message: String) = logger.warn(message)
+      def warn(message: String) { logger.warn(message) }
     }
 
     val cmsClient = CmsClient(cmsLogger, "CMS", new File(System.getProperty("user.home"), ".cms"), hubCallback)
-    LiftRules.unloadHooks.append({
-      cmsClient.close
-    })
+    LiftRules.unloadHooks.append({ () => cmsClient.close() })
 
     // Twitter search integration
     println("Props.get(twitter.search)=" + Props.get("twitter.search"))
@@ -56,7 +54,7 @@ class Boot {
     val logger = Logger("twitter.client")
     val twitterClient = new TwitterClientActor(logger, minutes(1), searchUri)
     twitterClient ! TwitterClient.Update
-    twitterClient.start
+    twitterClient.start()
     logger.info("Starting twitter search: " + searchUri)
 
     LiftRules.snippetDispatch.append({
@@ -136,7 +134,7 @@ class Boot {
     case RewriteRequest(ParsePath("news.html" :: Nil, _, _, false), GetRequest, _) =>
       RewriteResponse(news, Map.empty, true)
     case RewriteRequest(ParsePath(slug :: Nil, _, _, false), GetRequest, _)
-      if cmsClient.getPageBySlug(CmsSlug.fromString(slug)).isDefined =>
+      if cmsClient.fetchPageBySlug(CmsSlug.fromString(slug)).isDefined =>
       RewriteResponse(staticPage, Map("slug" -> slug), true)
     case RewriteRequest(ParsePath("news" :: slug :: Nil, _, _, false), GetRequest, _) =>
       RewriteResponse(staticPost, Map("slug" -> slug), true)

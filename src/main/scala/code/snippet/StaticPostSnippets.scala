@@ -10,7 +10,7 @@ class StaticPostSnippets(cmsClient: CmsClient) extends DispatchLocSnippets {
     case "page" => _ =>
       S.param("slug").map {
         slug =>
-          cmsClient.getPostBySlug(CmsSlug.fromString(slug)).map {
+          cmsClient.fetchPostBySlug(CmsSlug.fromString(slug)).map {
             entry =>
               <xml:group>
                 <h2>{entry.title}</h2>

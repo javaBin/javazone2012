@@ -21,7 +21,7 @@ class JavaZonePagesSnippet(val cmsClient: CmsClient, val twitterSearch: TwitterS
       <li>
         <a href="/news.html">News</a>
       </li>
-      {NodeSeq.fromSeq(cmsClient.getTopPages.map(pageToLi))}
+      {NodeSeq.fromSeq(cmsClient.fetchTopPages().map(pageToLi))}
     </ul>
 
   def tweets(body: NodeSeq): NodeSeq =
