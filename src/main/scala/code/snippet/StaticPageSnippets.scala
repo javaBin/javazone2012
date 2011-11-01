@@ -11,7 +11,7 @@ class StaticPageSnippets(cmsClient: CmsClient) extends DispatchLocSnippets with 
     case "page" => _ =>
       (for {
         slug <- S.param("slug").map(CmsSlug.fromString)
-        entry <- Box(cmsClient.getPageBySlug(slug))
+        entry <- Box(cmsClient.fetchPageBySlug(slug))
       } yield {
         <xml:group>
           <h1>{entry.title}</h1>
@@ -21,8 +21,8 @@ class StaticPageSnippets(cmsClient: CmsClient) extends DispatchLocSnippets with 
     case "siblings" => _ =>
       (for {
         slug <- S.param("slug").map(CmsSlug.fromString)
-        parent <- cmsClient.getParentOfPageBySlug(slug)
-        (prev, item, next) <- cmsClient.getSiblingsOf(slug)
+        parent <- cmsClient.fetchParentOfPageBySlug(slug)
+        (prev, item, next) <- cmsClient.fetchSiblingsOf(slug)
       } yield {
         <xml:group>
           <div id="submenu">
@@ -38,7 +38,7 @@ class StaticPageSnippets(cmsClient: CmsClient) extends DispatchLocSnippets with 
     case "children" => _ =>
       (for {
         slug <- S.param("slug").map(CmsSlug.fromString)
-        list <- cmsClient.getChildrenOf(slug) if !list.isEmpty
+        list <- cmsClient.fetchChildrenOf(slug) if !list.isEmpty
       } yield {
         <xml:group>
           <div id="submenu">

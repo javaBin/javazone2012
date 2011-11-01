@@ -16,7 +16,7 @@ class NewsSnippets(cmsClient: CmsClient, offset: Option[Int], limit: Positive) e
           orElse(S.param("start").toOption.flatMap(parseInt)).
           getOrElse(0)
 
-      val response = cmsClient.getEntriesForCategory("News", offset, limit)
+      val response = cmsClient.fetchEntriesForCategory("News", offset, limit)
 
       response.page.map(entryToHtml) ++ readMoreLink(response, offset)
   }
