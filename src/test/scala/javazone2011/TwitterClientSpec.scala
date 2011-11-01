@@ -3,7 +3,7 @@ package javazone2011
 import java.net.URL
 import org.apache.abdera.Abdera
 import org.apache.abdera.model._
-import org.specs._
+import org.specs2.mutable._
 import org.joda.time.{Period, DateTime => DT}
 
 class TwitterClientSpec extends Specification {
