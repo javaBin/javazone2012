@@ -1,5 +1,6 @@
 package bootstrap.liftweb
 
+/*
 import code.snippet._
 import java.io.{FileInputStream, File}
 import java.net.{URI, URL}
@@ -15,8 +16,10 @@ import no.arktekk.push._
 import no.javabin.atom2twitterpublish.Atom2TwitterSync
 import org.joda.time.Minutes._
 import scala.util.Random
+*/
 
 class Boot {
+  /*
   def boot() {
     LiftRules.configureLogging = LoggingAutoConfigurer()
 
@@ -139,4 +142,6 @@ class Boot {
     case RewriteRequest(ParsePath("news" :: slug :: Nil, _, _, false), GetRequest, _) =>
       RewriteResponse(staticPost, Map("slug" -> slug), true)
   }
+
+  */
 }

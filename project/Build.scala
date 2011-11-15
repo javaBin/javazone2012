@@ -3,14 +3,14 @@ import sbtrelease.Release
 import sbtrelease.Release._
 import sbtrelease.ReleaseKeys
 import sbtrelease.ReleasePart
-//import sbtrelease._
-import Keys._
+import sbt.Keys._
+import com.github.siasia.WebPlugin._
 
 object JavaZonePortal extends Build {
 
   val logbackVersion = "0.9.18"
   val abderaVersion = "1.1.2"
-  val liftVersion = "2.4-M4"
+  val unfilteredVersion = "0.5.1"
 
   lazy val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "no.java.javazone-portal",
@@ -33,13 +33,13 @@ object JavaZonePortal extends Build {
 //          Some("javaBin" at "http://smia.java.no/maven/dist/releases")
 //    },
 
-
   lazy val project = Project(
     id = "javazone-portal",
     base = file("."),
     settings = buildSettings ++
       releaseSettings ++
 //      credentialsSetting ++
+      webSettings ++
       Seq(
       description := "JavaZone 2012 Portal",
       ReleaseKeys.releaseProcess <<= thisProjectRef apply { ref =>
@@ -59,10 +59,8 @@ object JavaZonePortal extends Build {
         )
       },
       libraryDependencies := Seq(
-        "net.liftweb" %% "lift-common" % liftVersion % "compile->default" withSources(),
-        "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default" withSources(),
-        "net.liftweb" %% "lift-mapper" % liftVersion % "compile->default" withSources(),
-        "net.liftweb" %% "lift-util" % liftVersion % "compile->default" withSources(),
+        "net.databinder" %% "unfiltered-filter" % unfilteredVersion,
+        "net.databinder" %% "unfiltered-jetty" % unfilteredVersion % "test",
 
         "no.javabin" %% "atom2twitterpublisher" % "1.1",
         "no.arktekk.atom-client" %% "atom-client-lift" % "1.0",
@@ -73,7 +71,10 @@ object JavaZonePortal extends Build {
         "org.mortbay.jetty" % "jetty" % "6.1.22" % "test->default" withSources(),
         "junit" % "junit" % "4.5" % "test->default",
         "org.specs2" %% "specs2" % "1.6.1" % "test->default" withSources(),
-        "com.h2database" % "h2" % "1.2.138"
+        "com.h2database" % "h2" % "1.2.138",
+
+        // For xsbt-web-plugin
+        "org.mortbay.jetty" % "jetty" % "6.1.22" % "container"
       )
     )
   )
