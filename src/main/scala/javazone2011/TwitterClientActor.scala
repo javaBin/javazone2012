@@ -1,12 +1,12 @@
 package javazone2011
 
-import net.liftweb.common.Logger
+import java.net._
+import org.slf4j.Logger
 import org.apache.abdera.model._
-import scala.actors.{TIMEOUT, Actor}
-import scala.collection.JavaConversions._
-import org.apache.abdera.protocol.client.{RequestOptions, AbderaClient}
+import org.apache.abdera.protocol.client._
 import org.joda.time.{Period, Minutes, DateTime => DT}
-import java.net.{URL, URI}
+import scala.actors._
+import scala.collection.JavaConversions._
 
 case class JzTweet(handle: String,
                    handleUrl: URL,
@@ -17,9 +17,9 @@ case class JzTweet(handle: String,
                    timeAgo: String)
 
 trait TwitterSearch {
-  var searchUrlHtml: Option[URL]
+  def searchUrlHtml: Option[URL]
 
-  var currentResults: List[JzTweet]
+  def currentResults: List[JzTweet]
 }
 
 class TwitterClientActor(logger: Logger, timeout: Minutes, uri: URI) extends Actor with TwitterSearch {
@@ -67,7 +67,7 @@ class TwitterClientActor(logger: Logger, timeout: Minutes, uri: URI) extends Act
             val x = TwitterClient.handleFeed(new DT(), root).take(NUMBER_OF_TWEETS_TO_SHOW)
 //            logger.info("Got " + x.length + " tweets from feed")
             currentResults = x
-            searchUrlHtml = TwitterClient.findLinkByRel(asScalaIterable(root.getLinks), "alternate")
+            searchUrlHtml = TwitterClient.findLinkByRel(collectionAsScalaIterable(root.getLinks), "alternate")
           case _ =>
             logger.warn("Unknown content type: " + contentType)
         }
@@ -82,12 +82,12 @@ object TwitterClient {
   object Update
 
   def handleFeed(now: DT, feed: Feed): List[JzTweet] = {
-    asScalaIterable(feed.getEntries).flatMap(entryToJzTweet(now)).toList
+    collectionAsScalaIterable(feed.getEntries).flatMap(entryToJzTweet(now)).toList
   }
 
   def entryToJzTweet(now: DT)(entry: Entry): Option[JzTweet] = for {
     published <- Option(entry.getPublished)
-    links = asScalaIterable(entry.getLinks).toList
+    links = collectionAsScalaIterable(entry.getLinks).toList
     htmlLink <- findLinkByMimeType(links, "text/html")
     author <- Option(entry.getAuthor)
     handleName <- Option(author.getName) if handleName.endsWith(")")
