@@ -11,14 +11,15 @@ import org.joda.time.Minutes._
 import scala.util.control._
 import scala.xml._
 import unfiltered.filter._
-import unfiltered.request._
 import unfiltered.response._
 
 import org.slf4j._
 import org.constretto._
 import org.constretto.ScalaValueConverter._
 import org.apache.commons.io.IOUtils
+import unfiltered.request._
 
+// TODO: Wrap an unfiltered kit around this plan that prevent all methods except GET (and possibly HEAD)
 class JzPortalPlan extends Plan {
   val pageSize = Positive.fromInt(2)
 
@@ -29,12 +30,15 @@ class JzPortalPlan extends Plan {
   import html._
 
   def intent = {
-    newsIntent.orElse(fallbackIntent)
+    newsIntent.orElse(pagesIntent.orElse(fallbackIntent))
   }
 
   def fallbackIntent = Intent {
     case Path(Seg(Nil)) =>
       Redirect("/news.html")
+
+    case Path(Seg("favicon.ico" :: Nil)) =>
+      Redirect("http://java.no/favicon.ico")
 
     case req & Path(p) =>
       Option(classOf[JzPortalPlan].getClassLoader.getResourceAsStream("webapp" + p)) match {
@@ -47,22 +51,6 @@ class JzPortalPlan extends Plan {
           val topPages = cmsClient.fetchTopPages()
           NotFound ~> Html(notFound(topPages, p))
       }
-  }
-
-  case class PathBasedContentTypeResponder(path: String) extends Responder[Any] {
-    def respond(res: HttpResponse[Any]) {
-      val contentType = path.replaceAll(".*\\.([a-z]*)$", "$1") match {
-        case "js" => "text/javascript"
-        case "html" => "text/html"
-        case "css" => "text/css"
-        case "jpg" => "image/jpeg"
-        case "jpeg" => "image/jpeg"
-        case "gif" => "image/gif"
-        case "png" => "image/png"
-        case _ => "application/octet-stream"
-      }
-      res.header("Content-Type", contentType)
-    }
   }
 
   def newsIntent = Intent {
@@ -81,6 +69,11 @@ class JzPortalPlan extends Plan {
       }
   }
 
+  def pagesIntent = Intent {
+    case Page(page) =>
+      Ok ~> Html(renderPage(page))
+  }
+
   def renderNewsList(start: Option[String]): NodeSeq = {
     val offset = start.flatMap(parseInt).getOrElse(0)
 
@@ -95,6 +88,25 @@ class JzPortalPlan extends Plan {
   } yield {
     val topPages = cmsClient.fetchTopPages()
     news(topPages, post)
+  }
+
+  def renderPage(p: CmsEntry) = {
+    val topPages = cmsClient.fetchTopPages()
+    page(topPages, p)
+  }
+
+  object Page {
+    def unapply[T](req: HttpRequest[T]): Option[CmsEntry] = {
+      val list = req.uri.split('?')(0).split("/").toList
+      println("list = " + list)
+      list match {
+        case "" :: slug :: Nil =>
+          val s = slug.replaceFirst("\\.html$", "")
+          cmsClient.fetchPageBySlug(CmsSlug.fromString(s))
+        case _ =>
+          None
+      }
+    }
   }
 
   override def init(config: FilterConfig) {
