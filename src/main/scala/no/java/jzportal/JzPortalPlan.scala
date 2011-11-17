@@ -107,7 +107,6 @@ class JzPortalPlan extends Plan {
   object Page {
     def unapply[T](req: HttpRequest[T]): Option[CmsEntry] = {
       val list = req.uri.split('?')(0).split("/").toList
-      println("list = " + list)
       list match {
         case "" :: slug :: Nil =>
           val s = slug.replaceFirst("\\.html$", "")
