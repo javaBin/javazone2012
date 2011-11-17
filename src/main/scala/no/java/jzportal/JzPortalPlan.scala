@@ -17,6 +17,7 @@ import unfiltered.response._
 import org.slf4j._
 import org.constretto._
 import org.constretto.ScalaValueConverter._
+import org.apache.commons.io.IOUtils
 
 class JzPortalPlan extends Plan {
   val pageSize = Positive.fromInt(2)
@@ -25,22 +26,75 @@ class JzPortalPlan extends Plan {
   var cmsClient: CmsClient = null
   var twitterClient: TwitterSearch = null
 
-  import html.HtmlGenerator._
-  import html.HtmlTemplates._
+  import html._
 
   def intent = {
-    case Path(Seg(Nil)) => Redirect("/news.html")
-    case Path(Seg("news.html" :: Nil)) & Params(params) =>
-      Ok ~> Html(fetchNews(params.get("start").flatMap(_.headOption)))
-    case Path(Seg(x :: Nil)) => Ok ~> ResponseString("x=" + x + "\n")
+    newsIntent.orElse(fallbackIntent)
   }
 
-  def fetchNews(start: Option[String]): NodeSeq = {
+  def fallbackIntent = Intent {
+    case Path(Seg(Nil)) =>
+      Redirect("/news.html")
+
+    case req & Path(p) =>
+      Option(classOf[JzPortalPlan].getClassLoader.getResourceAsStream("webapp" + p)) match {
+        case Some(inputStream) =>
+          logger.info("Found resource: /webapp" + p)
+          val bytes = IOUtils.toByteArray(inputStream)
+          Ok ~> PathBasedContentTypeResponder(p) ~> ResponseBytes(bytes)
+        case None =>
+          logger.info("Not found: /webapp" + p)
+          val topPages = cmsClient.fetchTopPages()
+          NotFound ~> Html(notFound(topPages, p))
+      }
+  }
+
+  case class PathBasedContentTypeResponder(path: String) extends Responder[Any] {
+    def respond(res: HttpResponse[Any]) {
+      val contentType = path.replaceAll(".*\\.([a-z]*)$", "$1") match {
+        case "js" => "text/javascript"
+        case "html" => "text/html"
+        case "css" => "text/css"
+        case "jpg" => "image/jpeg"
+        case "jpeg" => "image/jpeg"
+        case "gif" => "image/gif"
+        case "png" => "image/png"
+        case _ => "application/octet-stream"
+      }
+      res.header("Content-Type", contentType)
+    }
+  }
+
+  def newsIntent = Intent {
+    case Path(Seg("news.html" :: Nil)) & Params(params) =>
+      val start = params.get("start").flatMap(_.headOption)
+      Ok ~> Html(renderNewsList(start))
+
+    case Path(Seg("news" :: slug :: Nil)) & Path(p) =>
+      val s = slug.replaceFirst("\\.html$", "")
+      renderNewsItem(s) match {
+        case Some(html) =>
+          Ok ~> Html(html)
+        case None =>
+          val topPages = cmsClient.fetchTopPages()
+          NotFound ~> Html(notFound(topPages, p))
+      }
+  }
+
+  def renderNewsList(start: Option[String]): NodeSeq = {
     val offset = start.flatMap(parseInt).getOrElse(0)
 
     val response = cmsClient.fetchEntriesForCategory("News", offset, pageSize)
+    val topPages = cmsClient.fetchTopPages()
 
-    news(topPages(cmsClient), response.page.map(entryToHtml), readMoreLink(response, offset))
+    news(topPages, response)
+  }
+
+  def renderNewsItem(slug: String): Option[NodeSeq] = for {
+    post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
+  } yield {
+    val topPages = cmsClient.fetchTopPages()
+    news(topPages, post)
   }
 
   override def init(config: FilterConfig) {
