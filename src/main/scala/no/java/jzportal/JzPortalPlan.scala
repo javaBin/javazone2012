@@ -70,11 +70,11 @@ class JzPortalPlan extends Plan {
   }
 
   def pagesIntent = Intent {
-    case Page(page) =>
+    case Page(page) & Path(path) =>
       Ok ~> Html(renderPage(page))
   }
 
-  def renderNewsList(start: Option[String]): NodeSeq = {
+  def renderNewsList(start: Option[String]) = {
     val offset = start.flatMap(parseInt).getOrElse(0)
 
     val response = cmsClient.fetchEntriesForCategory("News", offset, pageSize)
@@ -91,8 +91,14 @@ class JzPortalPlan extends Plan {
   }
 
   def renderPage(p: CmsEntry) = {
+    val siblings = for {
+      parent <- cmsClient.fetchParentOfPageBySlug(p.slug)
+      (prev, item, next) <- cmsClient.fetchSiblingsOf(p.slug)
+    } yield (parent, prev, item, next)
+
     val topPages = cmsClient.fetchTopPages()
-    page(topPages, p)
+    val children = cmsClient.fetchChildrenOf(p.slug)
+    page(topPages, p, children, siblings)
   }
 
   object Page {
@@ -170,7 +176,7 @@ class JzPortalPlan extends Plan {
     Exception.allCatch either cmsClient.close()
     logger.info("Closed CMS client")
   }
-  
+
   def loadConstretto() = {
     val stores = Seq(Constretto.properties("classpath:default.properties"))
 
