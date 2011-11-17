@@ -1,20 +1,20 @@
 package code.snippet
 
-import net.liftweb.http.DispatchSnippet
+//import net.liftweb.http.DispatchSnippet
 import no.arktekk.cms._
 import org.joda.time.format._
 import scala.xml.NodeSeq
 import javazone2011.{JzTweet, TwitterSearch}
 
-class JavaZonePagesSnippet(val cmsClient: CmsClient, val twitterSearch: TwitterSearch) extends DispatchSnippet {
+class JavaZonePagesSnippet(val cmsClient: CmsClient, val twitterSearch: TwitterSearch) /*extends DispatchSnippet*/ {
 
   import JavaZonePagesSnippet._
 
-  val dispatch: DispatchIt = {
-    case "topPages" => topPages _
-    case "tweets" => tweets _
-    case "moreTweets" => moreTweets _
-  }
+//  val dispatch: DispatchIt = {
+//    case "topPages" => topPages _
+//    case "tweets" => tweets _
+//    case "moreTweets" => moreTweets _
+//  }
 
   def topPages(body: NodeSeq): NodeSeq =
     <ul>

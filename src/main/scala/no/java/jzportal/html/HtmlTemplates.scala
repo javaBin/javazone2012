@@ -1,9 +1,9 @@
 package no.java.jzportal.html
 
-import org.joda.time.format.{DateTimeFormatterBuilder, DateTimeFormatter}
-import no.arktekk.cms.{OpenSearchResponse, CmsEntry}
-import scala.xml._
 import javazone2011.JzTweet
+import no.arktekk.cms._
+import org.joda.time.format._
+import scala.xml._
 
 object HtmlTemplates {
 
@@ -73,7 +73,7 @@ object HtmlTemplates {
     <div id="sidebar">
       <h2>
         <a href="http://twitter.com/javazone">#javazone</a>
-        <span class="follow">Follow&nbsp;us&nbsp;on&nbsp;<a href="http://www.facebook.com/JavaZoneConference">Facebook</a>&nbsp;and&nbsp;<a href="http://twitter.com/javazone">Twitter</a></span>
+        <span class="follow">Follow us on <a href="http://www.facebook.com/JavaZoneConference">Facebook</a> and <a href="http://twitter.com/javazone">Twitter</a></span>
       </h2>
       <div id="twitter" class="twitted">
         <!--
@@ -101,7 +101,9 @@ object HtmlTemplates {
     <body>
     <div id="header" class="center">
       <div id="header-content">
-        <a class="logo" title="Javazone - Forsiden" href="/"><img src="/images/jz11_logo.png" alt="Javazone 2011" title="Javazone - Forsiden" class="logo"/></a>
+        <a href="/" title="Javazone - Forsiden" class="logo">
+          <img src="/images/jz11_logo.png" alt="Javazone 2011" title="Javazone - Forsiden" class="logo"/>
+        </a>
         <div id="mainmenu">{topPages}</div>
       </div>
     </div>
@@ -133,10 +135,10 @@ object HtmlTemplates {
   </xml:group>
 
   def news(topPages: => NodeSeq, newsList: => List[NodeSeq], readMore: => NodeSeq) = default(topPages,
-    <xml:group>
+    <div id="main">
       <h1>News</h1>
       {newsList.foldLeft(NodeSeq.Empty)((news, nodes) => nodes ++ news)}
       {readMore}
-      </xml:group>
+    </div>
   )
 }

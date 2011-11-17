@@ -1,12 +1,13 @@
 package code.snippet
 
-import net.liftweb.common._
-import net.liftweb.http.S
-import net.liftweb.sitemap.Loc._
+//import net.liftweb.common._
+//import net.liftweb.http.S
+//import net.liftweb.sitemap.Loc._
 import no.arktekk.cms.{CmsClient, CmsSlug}
 import scala.xml._
 
-class StaticPageSnippets(cmsClient: CmsClient) extends DispatchLocSnippets with Logger {
+class StaticPageSnippets(cmsClient: CmsClient) /*extends DispatchLocSnippets with Logger*/ {
+  /*
   def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "page" => _ =>
       (for {
@@ -50,4 +51,5 @@ class StaticPageSnippets(cmsClient: CmsClient) extends DispatchLocSnippets with 
         </xml:group>
       }).openOr(NodeSeq.Empty)
   }
+  */
 }

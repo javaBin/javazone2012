@@ -1,11 +1,12 @@
 package code.snippet
 
-import net.liftweb.sitemap.Loc.DispatchLocSnippets
+//import net.liftweb.sitemap.Loc.DispatchLocSnippets
+//import net.liftweb.http.S
 import xml.NodeSeq
-import net.liftweb.http.S
 import no.arktekk.cms.{CmsSlug, CmsClient}
 
-class StaticPostSnippets(cmsClient: CmsClient) extends DispatchLocSnippets {
+class StaticPostSnippets(cmsClient: CmsClient) /*extends DispatchLocSnippets*/ {
+  /*
   def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "page" => _ =>
       S.param("slug").map {
@@ -19,4 +20,5 @@ class StaticPostSnippets(cmsClient: CmsClient) extends DispatchLocSnippets {
           }
       }.openOr(None).getOrElse(NodeSeq.Empty)
   }
+  */
 }

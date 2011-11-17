@@ -1,5 +1,6 @@
 package code.snippet
 
+/*
 import net.liftweb.common._
 import net.liftweb.http.S
 import net.liftweb.sitemap.Loc._
@@ -16,6 +17,7 @@ class BannerSnippet(val cmsClient: CmsClient) extends DispatchLocSnippets with L
       } yield createBannerFor("news")).openOr(NodeSeq.Empty)
   }
 }
+*/
 
 object BannerSnippet {
   //TODO: generify this to 'discover' banners from the images folder...

@@ -4,11 +4,10 @@ import java.io._
 import java.net._
 import javax.servlet.FilterConfig
 import javazone2011._
-import no.arktekk.push._
 import no.arktekk.cms.{Logger => CmsLogger, _}
 import no.arktekk.cms.CmsUtil._
+import no.arktekk.cms.atompub._
 import org.joda.time.Minutes._
-import scala.util._
 import scala.util.control._
 import scala.xml._
 import unfiltered.filter._
@@ -51,6 +50,9 @@ class JzPortalPlan extends Plan {
 
     CmsUtil.skipEhcacheUpdateCheck
 
+    val constretto = loadConstretto()
+
+    /*
     // PubsubhubbubSubscriber
     val subscriptionUrl = new URL("http://localhost:8080/pubsubhubbub")
     val pubsubhubbub: PubsubhubbubSubscriber = new DefaultPubsubhubbubSubscriber(new Random(), subscriptionUrl)
@@ -58,6 +60,8 @@ class JzPortalPlan extends Plan {
     def hubCallback(hub: URL, topic: URL) {
       pubsubhubbub.addTopicToHub(hub, topic)
     }
+    */
+    def hubCallback(hub: URL, topic: URL) {}
 
     // CMS Integration
     val cmsLogger = new CmsLogger {
@@ -68,16 +72,23 @@ class JzPortalPlan extends Plan {
       def warn(message: String) { logger.warn(message) }
     }
 
-    val cmsClient = CmsClient(cmsLogger, "CMS", new File(System.getProperty("user.home"), ".cms"), hubCallback)
+    // TODO: Make the cache directory configurable
+    val cmsCacheDir = new File("target/cms-cache")
+    val atomPubClientConfiguration = new AtomPubClientConfiguration(cmsLogger, "CMS", cmsCacheDir, None, Some(minutes(10)))
+    val atomPubClient = AtomPubClient(atomPubClientConfiguration)
+    val cmsConfiguration = CmsClient.Configuration(
+      constretto("cms.serviceUrl")(urlConverter),
+      constretto("cms.workspace")(stringConverter),
+      constretto("cms.postsCollection")(stringConverter),
+      constretto("cms.pagesCollection")(stringConverter))
+    val cmsClient = new DefaultCmsClient(cmsLogger, atomPubClient, cmsConfiguration, hubCallback)
 
     this.cmsClient = cmsClient
 
     // Twitter search integration
     this.twitterClient = {
-      val constretto = Constretto(Seq(Constretto.properties("classpath:default.properties")))
-  //    println("Props.get(twitter.search)=" + Props.get("twitter.search"))
       val x: String = constretto("twitter.search")(stringConverter)
-      println(x)
+      println("twitter search = " + x)
       val searchUri = new URI(x)
       val logger = LoggerFactory.getLogger("twitter.client")
       val twitterClient = new TwitterClientActor(logger, minutes(1), searchUri)
@@ -92,5 +103,29 @@ class JzPortalPlan extends Plan {
     logger.info("Closing CMS client")
     Exception.allCatch either cmsClient.close()
     logger.info("Closed CMS client")
+  }
+  
+  def loadConstretto() = {
+    val stores = Seq(Constretto.properties("classpath:default.properties"))
+
+    val withResources = stores.foldLeft(new ConstrettoBuilder)(_.addConfigurationStore(_))
+    val withTags = constrettoTags.foldLeft(withResources)(_.addCurrentTag(_))
+    Constretto.configuration(withTags.getConfiguration)
+  }
+
+  def constrettoTags = {
+    val hostname = try {
+      Some(InetAddress.getLocalHost.getHostName)
+    } catch {
+      case _ => None
+    }
+
+    List(Some("dev"), hostname).flatten
+  }
+
+  val urlConverter = new ScalaValueConverter[URL] {
+    def convert(value: String) = {
+      new URL(value)
+    }
   }
 }
