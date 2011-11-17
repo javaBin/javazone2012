@@ -49,7 +49,8 @@ class JzPortalPlan extends Plan {
         case None =>
           logger.info("Not found: /webapp" + p)
           val topPages = cmsClient.fetchTopPages()
-          NotFound ~> Html(notFound(topPages, p))
+          val tweets = twitterClient.currentResults
+          NotFound ~> Html(notFound(topPages, tweets, p))
       }
   }
 
@@ -65,7 +66,8 @@ class JzPortalPlan extends Plan {
           Ok ~> Html(html)
         case None =>
           val topPages = cmsClient.fetchTopPages()
-          NotFound ~> Html(notFound(topPages, p))
+          val tweets = twitterClient.currentResults
+          NotFound ~> Html(notFound(topPages, tweets, p))
       }
   }
 
@@ -79,16 +81,16 @@ class JzPortalPlan extends Plan {
 
     val response = cmsClient.fetchEntriesForCategory("News", offset, pageSize)
     val topPages = cmsClient.fetchTopPages()
+    val tweets = twitterClient.currentResults
 
-    news(topPages, response)
+    news(topPages, tweets, response)
   }
 
   def renderNewsItem(slug: String): Option[NodeSeq] = for {
     post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
-  } yield {
     val topPages = cmsClient.fetchTopPages()
-    news(topPages, post)
-  }
+    val tweets = twitterClient.currentResults
+  } yield news(topPages, tweets, post)
 
   def renderPage(p: CmsEntry) = {
     val siblings = for {
@@ -98,7 +100,8 @@ class JzPortalPlan extends Plan {
 
     val topPages = cmsClient.fetchTopPages()
     val children = cmsClient.fetchChildrenOf(p.slug)
-    page(topPages, p, children, siblings)
+    val tweets = twitterClient.currentResults
+    page(topPages, tweets, p, children, siblings)
   }
 
   object Page {

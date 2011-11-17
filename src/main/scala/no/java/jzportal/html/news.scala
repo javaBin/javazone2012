@@ -3,9 +3,10 @@ package no.java.jzportal.html
 import xml.NodeSeq
 import no.java.jzportal.html.Snippets._
 import no.arktekk.cms.{OpenSearchResponse, CmsEntry}
+import javazone2011.JzTweet
 
 object news {
-  def apply(topPages: => List[CmsEntry], response: OpenSearchResponse) = default(topPages,
+  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], response: OpenSearchResponse) = default(topPages, tweets,
     <div id="main">
       <h1>News</h1>
       {
@@ -16,7 +17,7 @@ object news {
     </div>
   )
 
-  def apply(topPages: => List[CmsEntry], newsEntry: => CmsEntry) = default(topPages,
+  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], newsEntry: CmsEntry) = default(topPages, tweets,
     <div id="main">
       <h1>News</h1>
       {entryToHtml(newsEntry)}

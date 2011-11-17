@@ -2,9 +2,10 @@ package no.java.jzportal.html
 
 import xml.NodeSeq
 import no.arktekk.cms.CmsEntry
+import javazone2011.JzTweet
 
 object default {
-  def apply(topPages: List[CmsEntry], content: NodeSeq) =
+  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], content: NodeSeq) =
     <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
       <title>JavaZone 2011</title>
@@ -30,7 +31,7 @@ object default {
     <div id="wrapper" class="clearfix">
       <div id="content">
         {content}
-        {sidebar}
+        {sidebar(tweets)}
       </div>
     </div>
     <div id="footer-container">
@@ -80,18 +81,16 @@ object default {
       <img class="message" src="/images/banner/news/message.png" alt="JavaZone 2011"/>
     </div>
 
-  def sidebar =
+  def sidebar(tweets: List[JzTweet]) =
     <div id="sidebar">
       <h2>
         <a href="http://twitter.com/javazone">#javazone</a>
         <span class="follow">Follow us on <a href="http://www.facebook.com/JavaZoneConference">Facebook</a> and <a href="http://twitter.com/javazone">Twitter</a></span>
       </h2>
       <div id="twitter" class="twitted">
-        <!--
-          <lift:jz.tweets/>
-          <lift:jz.moreTweets/>
-        -->
-        TODO: Tweets
+        <ul id="twitter_update_list">
+          {tweets.map(Snippets.tweetToLi)}
+        </ul>
       </div>
     </div>
 }

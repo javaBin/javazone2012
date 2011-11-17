@@ -2,11 +2,12 @@ package no.java.jzportal.html
 
 import no.arktekk.cms._
 import scala.xml._
+import javazone2011.JzTweet
 
 object page {
   import Snippets._
 
-  def apply(topPages: => List[CmsEntry], page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(topPages,
+  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(topPages, tweets,
     <div id="main">
       {siblings.map(siblings_(_)).getOrElse(NodeSeq.Empty)}
       {children.filter(!_.isEmpty).map(children_(_)).getOrElse(NodeSeq.Empty)}
