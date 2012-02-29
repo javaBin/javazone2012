@@ -33,8 +33,17 @@ class JzPortalPlan extends Plan {
     newsIntent.orElse(pagesIntent.orElse(fallbackIntent))
   }
 
+  def dumpEntry(indent: Int)(entry: CmsEntry) {
+    println("".padTo(indent, '-') + "Title=" + entry.title + ", slug=" + entry.slug)
+    cmsClient.fetchChildrenOf(entry.slug).foreach{_.foreach{dumpEntry(indent + 1)}}
+  }
+
   def fallbackIntent = Intent {
     case Path(Seg(Nil)) =>
+      Redirect("/news.html")
+
+    case Path(Seg("dump" :: Nil)) =>
+      cmsClient.fetchTopPages().foreach {dumpEntry(0)}
       Redirect("/news.html")
 
     case Path(Seg("favicon.ico" :: Nil)) =>
@@ -139,13 +148,11 @@ class JzPortalPlan extends Plan {
 
     // TODO: Make the cache directory configurable
     val cmsCacheDir = new File("target/cms-cache")
-    val atomPubClientConfiguration = new AtomPubClientConfiguration(cmsLogger, "CMS", cmsCacheDir, None, Some(minutes(10)))
+    val atomPubClientConfiguration = new AtomPubClientConfiguration(cmsLogger, "CMS", cmsCacheDir, None, Some(minutes(10)), Some(CachingAbderaClient.confluenceFriendlyRequestOptions))
     val atomPubClient = AtomPubClient(atomPubClientConfiguration)
-    val cmsConfiguration = CmsClient.Configuration(
-      constretto("cms.serviceUrl")(urlConverter),
-      constretto("cms.workspace")(stringConverter),
-      constretto("cms.postsCollection")(stringConverter),
-      constretto("cms.pagesCollection")(stringConverter))
+    val cmsConfiguration = CmsClient.ExplicitConfiguration(
+      constretto("cms.postsFeed")(urlConverter),
+      constretto("cms.pagesFeed")(urlConverter))
     val cmsClient = new DefaultCmsClient(cmsLogger, atomPubClient, cmsConfiguration, hubCallback)
 
     this.cmsClient = cmsClient
@@ -186,11 +193,5 @@ class JzPortalPlan extends Plan {
     }
 
     List(Some("dev"), hostname).flatten
-  }
-
-  val urlConverter = new ScalaValueConverter[URL] {
-    def convert(value: String) = {
-      new URL(value)
-    }
   }
 }
