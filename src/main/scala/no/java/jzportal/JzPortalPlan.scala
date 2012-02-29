@@ -126,15 +126,6 @@ class JzPortalPlan extends Plan {
 
     val constretto = loadConstretto()
 
-    /*
-    // PubsubhubbubSubscriber
-    val subscriptionUrl = new URL("http://localhost:8080/pubsubhubbub")
-    val pubsubhubbub: PubsubhubbubSubscriber = new DefaultPubsubhubbubSubscriber(new Random(), subscriptionUrl)
-
-    def hubCallback(hub: URL, topic: URL) {
-      pubsubhubbub.addTopicToHub(hub, topic)
-    }
-    */
     def hubCallback(hub: URL, topic: URL) {}
 
     // CMS Integration

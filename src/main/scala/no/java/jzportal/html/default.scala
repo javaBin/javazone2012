@@ -65,15 +65,9 @@ object default {
     <div id="banner">
       <div id="banner-content">
         <ol class="images">
-          <li class="prev">
-            <img src="/images/banner/news/1.jpg" alt=""/>
-          </li>
-          <li class="curr">
-            <img src="/images/banner/news/2.jpg" alt=""/>
-          </li>
-          <li class="next">
-            <img src="/images/banner/news/3.jpg" alt=""/>
-          </li>
+          <li class="prev"><img src="/images/banner/news/1.jpg" alt=""/></li>
+          <li class="curr"><img src="/images/banner/news/2.jpg" alt=""/></li>
+          <li class="next"><img src="/images/banner/news/3.jpg" alt=""/></li>
         </ol>
       </div>
       <div id="prev" class="btn-nav"><img src="/images/banner/nav-left.png" alt=""/></div>
