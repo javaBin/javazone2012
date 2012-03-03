@@ -18,7 +18,6 @@ object page {
 
   def siblings_(siblings: (CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])) = siblings match { case (parent, prev, item, next ) =>
     <div id="submenu">
-      <span>{parent.title}:</span>
       <ul>
         {prev.map(entry => pageToLi(entry))}
         {pageToLi(item)}
@@ -29,7 +28,6 @@ object page {
 
   def children_(children: List[CmsEntry]) = 
     <div id="submenu">
-      <span>Content:</span>
       <ul>
         {children.map(entry => pageToLi(entry))}
       </ul>

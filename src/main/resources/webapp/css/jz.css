@@ -118,9 +118,13 @@ h2,h3 {
 #submenu {
     font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
     margin-top:-20px;
-    padding:0 0 40px 0;
+    padding:0 0 20px 0;
+    list-style-type:none;
 }
 
+#submenu li {
+    display:inline;
+}
 #submenu a {
     color:#fff;
     text-decoration:none;

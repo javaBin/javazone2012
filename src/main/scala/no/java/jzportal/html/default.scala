@@ -68,14 +68,6 @@ object default {
     </div>
 
     <div id="main">
-
-      <div id="submenu">
-        <a href="#">Practicalities</a>
-        <a href="#">Foobar</a>
-        <a href="#">Something</a>
-        <a href="#">Another</a>
-        <a href="#">Coolbreeze</a>
-      </div>
       
       <div class="body hyphenate">
         {content}
