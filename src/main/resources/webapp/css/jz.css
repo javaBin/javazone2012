@@ -292,11 +292,17 @@ h2,h3 {
     padding:0;
 }
 
-#partners img {
+#partners a {
+    display:block;
+    float:left;
     width:167px;
     opacity:0.9;
     box-shadow:none;
     margin:0 1px 1px 0;
+}
+
+#partners img {
+    width:100%;
 }
 
 #partners img:hover {

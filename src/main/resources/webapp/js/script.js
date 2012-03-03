@@ -50,7 +50,7 @@ var isMobile = function() {
 };
 
 var randomizepartners = function() {
-    var partners = shuffle($("#partners img"));
+    var partners = shuffle($("#partners a"));
     $("#partners").html("");
     for(var i = 0; i < partners.length; i++) {
         $("#partners").prepend(partners[i]);
