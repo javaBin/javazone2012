@@ -2,10 +2,9 @@ package no.java.jzportal.html
 
 import xml.NodeSeq
 import no.arktekk.cms.CmsEntry
-import no.java.jzportal.twitter.JzTweet
 
-object default {
-  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], content: NodeSeq) =
+class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val aboutJavaBin: NodeSeq) {
+  def apply(content: NodeSeq) =
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
       <title>JavaZone 2012</title>
@@ -60,18 +59,9 @@ object default {
       {content}
 
       <div class="side side2">
-        <h2><a href="#">About JavaZone</a></h2>
-       
-        <p>JavaZone is an important meeting place for software developers in Scandinavia, and the biggest community driven conference of its kind. JavaZone has been described as a high quality, independent conference – a leading forum for knowledge exchange for IT-professionals.</p>
-
-        <p>Over 30 large and mid-sized companies – our partners – contribute with speakers and exhibit their brand and services/products during the conference. Without partners, volunteers, the speakers and the participants, the conference would not be possible.</p>
+        {aboutJavaZone}
         <div class="spacer"></div>
-        <h2><a href="#">About javaBin</a></h2>
-
-        <p>Over the two conference days, we deliver more than 200,000 hours of expertise. In addition, many informal discussions take place at stands and between attendees. Altogether, JavaZone stands out as a tremendous arena for knowledge transfer.</p>
-
-        <p>A conference involving so many developers is also a key arena for recruitment. Through their exhibitions and other activities, our partners use the opportunity to promote their business and recruit new staff. JavaZone is more than just a conference. It’s a place to meet, network and socialize!</p>
-
+        {aboutJavaBin}
       </div>
       <div class="clear"></div>
     </div>

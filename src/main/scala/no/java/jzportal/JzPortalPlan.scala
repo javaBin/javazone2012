@@ -25,18 +25,27 @@ class JzPortalPlan extends Plan {
   val pageSize = Positive.fromInt(10)
 
   var logger: Logger = null
+  var atomPubClient: AtomPubClient = null
   var cmsClient: CmsClient = null
   var twitterClient: TwitterSearch = null
+  var aboutJavaZone: URL = null
+  var aboutJavaBin: URL = null
 
   import html._
 
-  def intent = {
-    newsIntent.orElse(pagesIntent.orElse(fallbackIntent))
+  case class HeadersFromEntry(entry: CmsEntry) extends Responder[Any] {
+//    def toString(dateTime: DateTime) = {
+//    }
+
+    def respond(res: HttpResponse[Any]) {
+      res.header("Cache-Control", "public, must-revalidate")
+
+//      entry.updatedOrPublished.foreach(dateTime => res.header("Last-Modified", toString(dateTime)))
+    }
   }
 
-  def dumpEntry(indent: Int)(entry: CmsEntry): String = {
-    ("".padTo(indent, ' ') + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories) + "\n" +
-    cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse("No children")
+  def intent = {
+    newsIntent.orElse(pagesIntent.orElse(fallbackIntent))
   }
 
   def fallbackIntent = Intent {
@@ -44,6 +53,10 @@ class JzPortalPlan extends Plan {
       Redirect("/news.html")
 
     case Path(Seg("dump" :: Nil)) =>
+      def dumpEntry(indent: Int)(entry: CmsEntry): String = {
+        ("".padTo(indent, ' ') + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories) + "\n" +
+        cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse("No children")
+      }
       val lines = cmsClient.fetchTopPages().map(dumpEntry(0))
       Ok ~> PlainTextContent ~> unfiltered.response.ResponseString(lines.mkString("\n") + "\n")
 
@@ -62,21 +75,8 @@ class JzPortalPlan extends Plan {
           Ok ~> PathBasedContentTypeResponder(p) ~> ResponseBytes(bytes)
         case None =>
           logger.info("Not found: /webapp" + p)
-          val topPages = cmsClient.fetchTopPages()
-          val tweets = twitterClient.currentResults
-          NotFound ~> Html5(notFound(topPages, tweets, p))
+          NotFound ~> Html5(notFound(default(), p))
       }
-  }
-
-  case class HeadersFromEntry(entry: CmsEntry) extends Responder[Any] {
-//    def toString(dateTime: DateTime) = {
-//    }
-
-    def respond(res: HttpResponse[Any]) {
-      res.header("Cache-Control", "public, must-revalidate")
-
-//      entry.updatedOrPublished.foreach(dateTime => res.header("Last-Modified", toString(dateTime)))
-    }
   }
 
   def newsIntent = Intent {
@@ -90,9 +90,7 @@ class JzPortalPlan extends Plan {
         case Some((entry, html)) =>
           Ok ~> HeadersFromEntry(entry) ~> Html5(html)
         case None =>
-          val topPages = cmsClient.fetchTopPages()
-          val tweets = twitterClient.currentResults
-          NotFound ~> Html5(notFound(topPages, tweets, p))
+          NotFound ~> Html5(notFound(default(), p))
       }
   }
 
@@ -101,21 +99,29 @@ class JzPortalPlan extends Plan {
       Ok ~> Html5(renderPage(page))
   }
 
+  def default(): default = {
+    def fetchEntry(url: URL): Option[NodeSeq] =
+      cmsClient.fetchEntry(url).map(_.content)
+
+    val topPages = cmsClient.fetchTopPages()
+    val aboutJavaZone = fetchEntry(this.aboutJavaZone).getOrElse(Nil)
+    val aboutJavaBin = fetchEntry(this.aboutJavaBin).getOrElse(Nil)
+    new default(topPages, aboutJavaZone, aboutJavaBin)
+  }
+
   def renderNewsList(start: Option[String]) = {
     val offset = start.flatMap(parseInt).getOrElse(0)
 
     val response = cmsClient.fetchEntriesForCategory("news", offset, pageSize)
-    val topPages = cmsClient.fetchTopPages()
     val tweets = twitterClient.currentResults
 
-    news(topPages, tweets, response)
+    news(default(), tweets, response)
   }
 
   def renderNewsItem(slug: String): Option[(CmsEntry, NodeSeq)] = for {
     post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
     val topPages = cmsClient.fetchTopPages()
-    val tweets = twitterClient.currentResults
-  } yield (post, news(topPages, tweets, post))
+  } yield (post, news(default(), post))
 
   def renderPage(p: CmsEntry) = {
     val siblings = for {
@@ -123,10 +129,8 @@ class JzPortalPlan extends Plan {
       (prev, item, next) <- cmsClient.fetchSiblingsOf(p.slug)
     } yield (parent, prev, item, next)
 
-    val topPages = cmsClient.fetchTopPages()
     val children = cmsClient.fetchChildrenOf(p.slug)
-    val tweets = twitterClient.currentResults
-    page(topPages, tweets, p, children, siblings)
+    page(default(), p, children, siblings)
   }
 
   object Page {
@@ -171,6 +175,9 @@ class JzPortalPlan extends Plan {
       constretto("cms.pagesFeed")(urlConverter))
     val cmsClient = new DefaultCmsClient(cmsLogger, atomPubClient, cmsConfiguration, hubCallback)
 
+    this.aboutJavaZone = constretto("cms.snippets.about_javazone")(urlConverter)
+    this.aboutJavaBin = constretto("cms.snippets.about_javabin")(urlConverter)
+    this.atomPubClient = atomPubClient
     this.cmsClient = cmsClient
 
     // Twitter search integration

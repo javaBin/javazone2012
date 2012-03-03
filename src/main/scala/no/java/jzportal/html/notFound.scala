@@ -1,10 +1,7 @@
 package no.java.jzportal.html
 
-import no.arktekk.cms.CmsEntry
-import no.java.jzportal.twitter.JzTweet
-
 object notFound {
-  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], path: String) = default(topPages, tweets, html(path))
+  def apply(default: default, path: String) = default(html(path))
   
   def html(path: String) =
     <div>

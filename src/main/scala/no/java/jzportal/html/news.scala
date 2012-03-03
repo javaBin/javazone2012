@@ -6,7 +6,7 @@ import no.arktekk.cms.{OpenSearchResponse, CmsEntry}
 import no.java.jzportal.twitter.JzTweet
 
 object news {
-  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], response: OpenSearchResponse) = default(topPages, tweets,
+  def apply(default: default, tweets: List[JzTweet], response: OpenSearchResponse) = default(
     <div class="body hyphenate">
       <div class="news">
         {
@@ -23,7 +23,7 @@ object news {
     </div>    
   )
 
-  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], newsEntry: CmsEntry) = default(topPages, tweets,
+  def apply(default: default, newsEntry: CmsEntry) = default(
     <div class="news">
       {entryToHtml(newsEntry)}
     </div>

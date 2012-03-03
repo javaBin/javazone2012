@@ -2,12 +2,11 @@ package no.java.jzportal.html
 
 import no.arktekk.cms._
 import scala.xml._
-import no.java.jzportal.twitter.JzTweet
 
 object page {
   import Snippets._
 
-  def apply(topPages: List[CmsEntry], tweets: List[JzTweet], page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(topPages, tweets,
+  def apply(default: default, page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(
     <div class="body bigbody hyphenate">
       {siblings.map(siblings_(_)).getOrElse(NodeSeq.Empty)}
       {children.filter(!_.isEmpty).map(children_(_)).getOrElse(NodeSeq.Empty)}
