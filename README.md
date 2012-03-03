@@ -1,20 +1,10 @@
 Development environment
 =======================
 
-To configure your javabin ivy repository settings, add the following to the <code>~/.ivy2/javabin.properties</code> file:
-<pre>
-host=smia.java.no
-user=[your ldap username]
-password=[your ldap password]
-</pre>
+* Use sbt-0.11.2
 
-The portal uses PubSubHubBub atom-client, which assumes a configuration file <code>~/.cms/config.properties</code> with content like:
+To run in sbt run this:
 
-<pre>
-serviceUrl=http://wp.java.no/?atompub=service
-workspace=javazone11 Workspace
-postsCollection=javazone11 Posts
-pagesCollection=javazone11 Pages
-</pre>
+    test:run-main no.java.jzportal.TestRunner
 
-Continue with your sbt goodness...
+Note that you want to use JRebel with sbt to get reloading to work.
