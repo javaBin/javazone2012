@@ -16,6 +16,7 @@
     height:100%;
     left:-100px;
     background:url("../img/sidesplash.png") 0 0 no-repeat;
+    background-position:fixed;
     animation: swingy 2s linear infinite alternate;
     -moz-animation: swingy 2s linear infinite alternate;
     -webkit-animation: swingy 2s linear infinite alternate; 
@@ -27,6 +28,7 @@
     top:0;
     left:-100px;
     background:url("../img/side.png") 0px 0px repeat-y;
+    background-position:fixed;
     width:300px;
     height:100%;
     z-index:0;
@@ -97,6 +99,10 @@
 
 #footer {
     padding-left:200px;
+}
+
+#footer p {
+    text-align:left;
 }
 
 }

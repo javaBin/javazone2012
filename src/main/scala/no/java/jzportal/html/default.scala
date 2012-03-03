@@ -10,6 +10,7 @@ object default {
     <head>
       <title>JavaZone 2012</title>
       <meta name = "viewport" content = "initial-scale = 0.6, user-scalable = no" /> 
+      <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico" />
       <link rel="stylesheet" href="/css/style.css" />
       <link rel="stylesheet" href="/css/jz.css" />
       <link rel="stylesheet" href="/css/min.css" />
@@ -85,7 +86,13 @@ object default {
     </div>
 
     <div id="footer">
-      Footer
+      <p>
+      <a href="#"><img src="/img/social/twitter.png" /></a>
+      <a href="#"><img src="/img/social/facebook.png" /></a>
+      <a href="#"><img src="/img/social/youtube.png" /></a>
+      <a href="#"><img src="/img/social/vimeo.png" /></a>
+      </p>
+      <p class="text">Designed by <a href="#">Accenture Creative Services</a></p>
     </div>
 
     </div></div></div>

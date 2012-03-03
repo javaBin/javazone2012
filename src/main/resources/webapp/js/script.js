@@ -112,13 +112,10 @@ $(function() {
         $(window).scroll(function(){
             next = - parseInt($(this).scrollTop(), 10) * 0.5;
             part = next * 0.5;
-            $("#splash").css("background-position-y", "" + next + "px");
-            $("#top").css("background-position-y", "" + next + "px");
+            $("#splash").css("background-position", "50% " + next + "px");
 
-
-            $("#sidesplash").css("background-position-y", "" + next + "px");
-            $("#sidesplash").css("background-position-x", "" + part + "px");
-            $("#side").css("background-position-x", "" + part + "px");
+            $("#sidesplash").css("background-position", "" + part + "px " + next + "px");
+            $("#side").css("background-position", "" + part + "px " + next + "px");
         });
     }());
 
