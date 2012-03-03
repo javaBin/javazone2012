@@ -52,6 +52,7 @@ object default {
 
     <div id="c1"><div id="c2"><div id="c4">
 
+    /*
     <div id="menu">
       <div id="menuelement-0"><a href="/">News</a></div>
       <div id="menuelement-1" class="high"><a href="/program.html">Program</a></div>
@@ -62,6 +63,8 @@ object default {
       <div id="menuelement-6"><a href="/videos.html">Videos</a></div>
       <div id="menuelement-7" class="high last"><a href="/about.html">Info</a></div>
     </div>
+    */
+    {menu(topPages)}
 
     <div id="main">
       
@@ -98,13 +101,36 @@ object default {
     </body>
     </html>
 
-  def topPages(topPages: List[CmsEntry]): NodeSeq =
-    <ul>
-      <li>
-        <a href="/news.html">News</a>
-      </li>
-      {NodeSeq.fromSeq(topPages.map(Snippets.pageToLi))}
-    </ul>
+  /*
+      <div id="menu">
+      <div id="menuelement-0"><a href="/">News</a></div>
+      <div id="menuelement-1" class="high"><a href="/program.html">Program</a></div>
+      <div id="menuelement-2" class="high"><a href="/tickets.html">Tickets</a></div>
+      <div id="menuelement-3"><a href="/speakers.html">Speakers</a></div>
+      <div id="menuelement-4" class="high middle"><a href="/partners.html">Partners</a></div>
+      <div id="menuelement-5"><a href="/awezone.html">AweZone</a></div>
+      <div id="menuelement-6"><a href="/videos.html">Videos</a></div>
+      <div id="menuelement-7" class="high last"><a href="/about.html">Info</a></div>
+    </div>
+   */
+
+  def menu(topPages: List[CmsEntry]): NodeSeq = {
+    implicit def f(o: Option[CmsEntry]): NodeSeq = o match {
+      case None => <span>&nbsp;</span>
+      case Some(entry) => <a href={entry.slug.toString()}>{entry.title}</a>
+    }
+
+    <div id="menu">
+      <div id="menuelement-0"><a href="/news.html">News</a></div>
+      <div id="menuelement-1" class="high">{topPages.lift(0).flatten}</div>
+      <div id="menuelement-2" class="high">{topPages.lift(1).flatten}</div>
+      <div id="menuelement-3">{topPages.lift(2).flatten}</div>
+      <div id="menuelement-4" class="high">{topPages.lift(3).flatten}</div>
+      <div id="menuelement-5">{topPages.lift(4).flatten}</div>
+      <div id="menuelement-6">{topPages.lift(5).flatten}</div>
+      <div id="menuelement-7" class="high">{topPages.lift(6).flatten}</div>
+    </div>
+  }
 
   def banner =
     <div id="banner">
@@ -119,5 +145,4 @@ object default {
       <div id="next" class="btn-nav"><img src="/images/banner/nav-right.png" alt=""/></div>
       <img class="message" src="/images/banner/news/message.png" alt="JavaZone 2011"/>
     </div>
-
 }

@@ -34,9 +34,9 @@ class JzPortalPlan extends Plan {
     newsIntent.orElse(pagesIntent.orElse(fallbackIntent))
   }
 
-  def dumpEntry(indent: Int)(entry: CmsEntry) {
-    println("".padTo(indent, '-') + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories)
-    cmsClient.fetchChildrenOf(entry.slug).foreach{_.foreach{dumpEntry(indent + 1)}}
+  def dumpEntry(indent: Int)(entry: CmsEntry): String = {
+    ("".padTo(indent, ' ') + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories) + "\n" +
+    cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse("No children")
   }
 
   def fallbackIntent = Intent {
@@ -44,8 +44,8 @@ class JzPortalPlan extends Plan {
       Redirect("/news.html")
 
     case Path(Seg("dump" :: Nil)) =>
-      cmsClient.fetchTopPages().foreach {dumpEntry(0)}
-      Redirect("/news.html")
+      val lines = cmsClient.fetchTopPages().map(dumpEntry(0))
+      Ok ~> PlainTextContent ~> unfiltered.response.ResponseString(lines.mkString("\n") + "\n")
 
     case Path(Seg("flush" :: Nil)) =>
       cmsClient.flushCaches()
