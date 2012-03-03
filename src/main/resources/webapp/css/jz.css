@@ -115,6 +115,29 @@ h2,h3 {
     text-shadow:1px 1px 1px rgba(0,0,0,0.8);
 }
 
+#submenu {
+    font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
+    margin-top:-20px;
+    padding:0 0 40px 0;
+}
+
+#submenu a {
+    color:#fff;
+    text-decoration:none;
+    text-transform:uppercase;
+    text-shadow:1px 1px 1px rgba(0,0,0,0.4);
+    font-size:18px;
+    font-weight:bold;
+    background:rgba(0,0,0,0.2);
+    border-bottom:1px solid rgba(0,0,0,0.3); 
+    border-right:1px solid rgba(0,0,0,0.3); 
+    padding:10px 20px;
+    text-shadow:0 0 20px rgba(255,255,255,0.3);
+}
+
+#submenu a:hover {
+    background:#000;
+}
 
 
 #c1 {
