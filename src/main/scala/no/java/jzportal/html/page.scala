@@ -2,7 +2,7 @@ package no.java.jzportal.html
 
 import no.arktekk.cms._
 import scala.xml._
-import javazone2011.JzTweet
+import no.java.jzportal.twitter.JzTweet
 
 object page {
   import Snippets._

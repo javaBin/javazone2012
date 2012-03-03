@@ -3,10 +3,10 @@ package no.java.jzportal
 import java.io._
 import java.net._
 import javax.servlet.FilterConfig
-import javazone2011._
 import no.arktekk.cms.{Logger => CmsLogger, _}
 import no.arktekk.cms.CmsUtil._
 import no.arktekk.cms.atompub._
+import no.java.jzportal.twitter._
 import org.joda.time.Minutes._
 import scala.util.control._
 import scala.xml._

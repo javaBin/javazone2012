@@ -1,4 +1,4 @@
-package javazone2011
+package no.java.jzportal.twitter
 
 import java.net._
 import org.slf4j.Logger
@@ -7,14 +7,6 @@ import org.apache.abdera.protocol.client._
 import org.joda.time.{Period, Minutes, DateTime => DT}
 import scala.actors._
 import scala.collection.JavaConversions._
-
-case class JzTweet(handle: String,
-                   handleUrl: URL,
-                   handleImage: URL,
-                   name: String,
-                   text: String,
-                   htmlLink: URL,
-                   timeAgo: String)
 
 trait TwitterSearch {
   def searchUrlHtml: Option[URL]
@@ -76,6 +68,14 @@ class TwitterClientActor(logger: Logger, timeout: Minutes, uri: URI) extends Act
     }
   }
 }
+
+case class JzTweet(handle: String,
+                   handleUrl: URL,
+                   handleImage: URL,
+                   name: String,
+                   text: String,
+                   htmlLink: URL,
+                   timeAgo: String)
 
 object TwitterClient {
 

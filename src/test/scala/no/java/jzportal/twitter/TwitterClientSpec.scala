@@ -1,4 +1,4 @@
-package javazone2011
+package no.java.jzportal.twitter
 
 import java.net.URL
 import org.apache.abdera.Abdera
@@ -7,6 +7,7 @@ import org.specs2.mutable._
 import org.joda.time.{Period, DateTime => DT}
 
 class TwitterClientSpec extends Specification {
+
   import TwitterClient._
 
   val abdera = new Abdera
@@ -18,13 +19,13 @@ class TwitterClientSpec extends Specification {
   "Twitter parser" should {
     "work" in {
       entryToJzTweet(now)(generateEntry("javazone (JavaZone)", "tjoho!")) must
-          beSome(JzTweet("javazone", url, handleImage, "JavaZone", "tjoho!", new URL("http://yo"), "2 hours ago"))
+        beSome(JzTweet("javazone", url, handleImage, "JavaZone", "tjoho!", new URL("http://yo"), "2 hours ago"))
 
       entryToJzTweet(now)(generateEntry("javazone (Java Zone)", "tjoho!")) must
-          beSome(JzTweet("javazone", url, handleImage, "Java Zone", "tjoho!", new URL("http://yo"), "2 hours ago"))
+        beSome(JzTweet("javazone", url, handleImage, "Java Zone", "tjoho!", new URL("http://yo"), "2 hours ago"))
 
       entryToJzTweet(now)(generateEntry("javazone (jeg er ) vanskelig)", "tjoho!")) must
-          beSome(JzTweet("javazone", url, handleImage, "jeg er ) vanskelig", "tjoho!", new URL("http://yo"), "2 hours ago"))
+        beSome(JzTweet("javazone", url, handleImage, "jeg er ) vanskelig", "tjoho!", new URL("http://yo"), "2 hours ago"))
 
       entryToJzTweet(now)(generateEntry(" (jeg er ) vanskelig)", "tjoho!")) must beNone
 

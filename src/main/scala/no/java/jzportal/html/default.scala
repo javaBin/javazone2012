@@ -2,7 +2,7 @@ package no.java.jzportal.html
 
 import xml.NodeSeq
 import no.arktekk.cms.CmsEntry
-import javazone2011.JzTweet
+import no.java.jzportal.twitter.JzTweet
 
 object default {
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], content: NodeSeq) =

@@ -1,7 +1,7 @@
 package no.java.jzportal.html
 
-import javazone2011.JzTweet
 import no.arktekk.cms._
+import no.java.jzportal.twitter.JzTweet
 import org.joda.time.format._
 import scala.xml._
 

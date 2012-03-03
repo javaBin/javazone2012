@@ -1,6 +1,6 @@
 package no.java.jzportal.html
 
-import javazone2011._
+import no.java.jzportal.twitter._
 import scala.xml._
 
 object HtmlGenerator {
