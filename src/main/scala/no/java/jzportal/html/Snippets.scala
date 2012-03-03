@@ -38,10 +38,9 @@ object Snippets {
       <div>{entry.content}</div>
     </div>
 
-  def tweetToLi(tweet: JzTweet): NodeSeq =
-    <li>
-      <span class="handle"><a href={tweet.handleUrl.toExternalForm}>{tweet.handle}</a></span>:
-      <span class="text">{tweet.text}</span><br/>
-      <span class="meta">{tweet.timeAgo} &#183; <a class="tweet_link" href={tweet.htmlLink.toString}>View Tweet</a></span>
-    </li>
+  def tweetToDiv(tweet: JzTweet): NodeSeq =
+    <div class="tweet">
+      <p>{tweet.text} <a href={tweet.handleUrl.toExternalForm}>{tweet.handle}</a></p>
+      <!--<span class="meta">{tweet.timeAgo} &#183; <a class="tweet_link" href={tweet.htmlLink.toString}>View Tweet</a></span>-->
+    </div>
 }

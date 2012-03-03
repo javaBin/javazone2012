@@ -8,7 +8,7 @@ object HtmlGenerator {
 
   def tweets(twitterSearch: TwitterSearch): NodeSeq =
     <ul id="twitter_update_list">
-      {twitterSearch.currentResults.map(tweetToLi(_))}
+      {twitterSearch.currentResults.map(tweetToDiv(_))}
     </ul>
 
   def moreTweets(twitterSearch: TwitterSearch): NodeSeq =

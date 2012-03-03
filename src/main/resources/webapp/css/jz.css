@@ -1,0 +1,253 @@
+@keyframes swingy {
+    0% { opacity:1; }
+    25% { opacity:0.9; }
+    50% { opacity:1; }
+    75% { opacity:0.80; }
+    100% { opacity:0.9; }
+}
+
+@-moz-keyframes swingy {
+    0% { opacity:1; }
+    25% { opacity:0.9; }
+    50% { opacity:1; }
+    75% { opacity:0.80; }
+    100% { opacity:0.9; }
+}
+
+@-webkit-keyframes swingy {
+    0% { opacity:1; }
+    25% { opacity:0.9; }
+    50% { opacity:1; }
+    75% { opacity:0.80; }
+    100% { opacity:0.9; }
+}
+
+ 
+body, html {
+    margin:0;
+    padding:0;
+    height:100%;
+    background:url("../img/tile.png");
+    color:#fff;
+    font-size:18px;
+}
+
+p,ul {
+    line-height:1.7em;
+    margin:0;
+    padding:0;
+    margin-bottom:1em;   
+    text-shadow:1px 1px 1px rgba(0,0,0,0.2); 
+}
+
+a, a:link, a:visited {
+    color:#00aced;
+    text-decoration:none;
+}
+
+a:hover {
+    color:#88dd00;
+}
+
+h2,h3 {
+    font-weight:normal;
+    font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
+    text-transform:uppercase;
+    text-shadow:0 0 20px rgba(255,255,255,0.5);
+    padding:0;
+    margin:0 0 1em 0;
+    font-size:20px;
+}
+
+.clear {
+    clear:both;
+}
+
+.hide {
+    display:none;
+}
+
+.spacer {
+    height:10px;
+}
+
+
+
+#menu {
+    display:none;
+    font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
+}
+
+.no-js #menu {
+    display:block;
+}
+
+#menu div {
+    float:left;
+    margin:-10px 12px -10px 0;
+    background:#88dd00;
+    width:90px;
+    height:90px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 2px 3px rgba(0,0,0,0.2);
+    font-size:18px;
+    opacity:0.9;
+}
+
+#menu div.high {
+    margin-top:-15px;
+}
+
+#menu a {
+    color:#fff;
+    text-decoration:none;
+    text-transform:uppercase;
+    display:block;
+    padding-top:60px;
+    padding-bottom:20px;
+    text-shadow:1px 1px 1px rgba(0,0,0,0.4);
+    font-size:16px;
+    font-weight:bold;
+}
+
+#menu a:active {
+    text-shadow:1px 1px 1px rgba(0,0,0,0.8);
+}
+
+
+
+#c1 {
+    background:url("../img/tbg.png") bottom center no-repeat;
+    padding:0 0 50px 0;
+}
+
+#main {
+    display:none;
+    font-family: "ff-meta-web-pro", helvetica, arial, sans-serif;
+}
+
+#main .body {
+    text-align:justify;
+    margin-bottom:20px;
+}
+
+.no-js #main {
+    display:block;
+}
+
+#main .body {
+    width:63%;
+    float:left;
+}
+
+#main .side {
+    float:right;
+    width:35%;
+    font-size:90%;
+}
+
+.no-js #main .body {
+    text-align:left;
+}
+
+#main p {
+    background:rgba(0,0,0,0.05);
+    padding:10px 15px;
+    margin:0 0 2px 0;
+    border-left:5px solid rgba(255,255,255,0.05); 
+}
+
+#main img {
+    width:100%;
+    margin:1px 0;
+    box-shadow:0 0 15px rgba(0,0,0,0.7);
+}
+
+#main h2, #main h3 {
+    padding:10px 20px;
+    background:rgba(0,0,0,0.2);   
+    border-left:5px solid #00aced; 
+    margin:0 0 2px 0;
+}
+
+#main h3 {
+    border-left-color:#88dd00;
+    color:#88dd00;
+}
+
+#main .side h2 {
+    padding:10px 15px;
+    margin:0 0 2px 0;
+    border-left:5px solid #00aced; 
+}
+
+
+#main .side p {
+    color:#ccc;
+    background:rgba(0,0,0,0.3);
+}
+
+#bottom {
+    z-index:0;
+    position:fixed;
+    bottom:0;
+    left:0;
+    background:url("../img/tbg.png") fixed bottom center no-repeat;
+    height:100%;
+    width:100%;
+}
+
+#main .tweet {
+    background:rgba(255,255,255,0.05);
+    padding:15px;
+    margin:0 0 2px 0;
+    border-left:5px solid rgba(255,255,255,0.1); 
+}
+
+#main .tweets h2 {
+}
+
+#main .tweet p {
+    border:none;
+    margin:0;
+    padding:0;
+    background:none;
+}
+
+#main .news {
+    margin-bottom:10px;
+}
+
+#main .news p {
+    border-left-color:rgba(255,255,255,0.1);
+}
+
+#footer {
+    float:left;
+    clear:both;
+    padding:20px 0;
+    text-align:center;
+    line-height:60px;
+}
+
+#footer a {
+    padding:10px 20px;
+    margin:0 0 10px 0;
+    background:rgba(0,0,0,0.2);
+}
+
+#partners {
+    margin-bottom:20px; 
+}
+
+#partners img {
+    width:171px;
+    opacity:0.9;
+    box-shadow:none;
+    margin:0 1px 1px 0;
+}
+
+#partners img:hover {
+    opacity:1;
+}

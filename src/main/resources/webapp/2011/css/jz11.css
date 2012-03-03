@@ -1,0 +1,582 @@
+/*
+Colors
+text:             #b6b2b5
+main background:  #202020
+links and h1:     #eb0c8b
+lines and header: #303030
+*/
+/* ################## */
+/* RESET              */
+/* ################## */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h2, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+/* ################## */
+/* GLOBAL             */
+/* ################## */
+
+html {
+  overflow-y: scroll;
+}
+
+html, body, form[runat] {
+  height: 100%;
+}
+
+body {
+  color: #b6b2b5;
+  background-color: #202020;
+  font: lighter 14px/18px Helvetica Neue, Helvetica, Verdana, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  text-align: center;
+}
+
+blockquote {
+  padding-bottom: 20px;
+  font-size: 1em;
+  font-style: italic;
+  margin-left: 2em;
+  border-left: 1px dotted #999;
+  padding-left: 1em;
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+:focus {
+  outline: 0;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+ins {
+  text-decoration: none;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+h1 {
+  color: #eb0c8b;
+  font: bolder 44px/46px Helvetica Neue, Helvetica, Verdana, Arial, sans-serif;
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border-bottom: 8px solid #303030;
+}
+
+h2 {
+  font: lighter 24px/26px Helvetica Neue, Helvetica, Verdana, Arial, sans-serif;
+  padding: 8px 0 12px 0;
+}
+
+h3 {
+  font: normal 16px/18px Helvetica Neue, Helvetica, Verdana, Arial, sans-serif;
+}
+
+a {
+  color: #eb0c8b;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+/* ################## */
+/* HEADER & MENU      */
+/* ################## */
+
+#header {
+  background-color: #303030;
+  height: 84px;
+}
+
+#header-content {
+  margin: 0 auto;
+  width: 1007px;
+  min-height: 100%;
+  text-align: left;
+}
+
+a.logo {
+  margin: 24px auto auto;
+  position: relative;
+  display: block;
+  width: 173px;
+  height: 42px;
+  float: left;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* ################## */
+/* CONTENT            */
+/* ################## */
+div#wrapper {
+  margin: 0 auto;
+}
+
+div#content {
+  position: relative;
+  top: 489px;
+  width: 1007px;
+  margin: 0 auto;
+  min-height: 100%;
+  text-align: left;
+}
+
+/* Footer. Needs some luv */
+
+div#footer-container {
+  position: relative;
+  top: 479px;
+  padding-bottom: 1px;
+  width: 100%;
+}
+
+div#footer {
+  font: normal lighter 14px Helvetica Neue, Helvetica, Verdana, Arial, sans-serif;
+  color: #656565;
+  margin: 16px auto;
+  width: 1007px;
+  height: 33px;
+  border-top: 1px solid #303030;
+  border-bottom: 1px solid #303030;
+}
+
+div#footer ul {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+}
+
+div#footer li {
+  display: block;
+  line-height: 32px;
+  float: left;
+  margin: 0;
+  padding: 0 15px 0 16px;
+}
+
+div#footer li:first-child {
+  padding: 0 15px 0 0;
+  background: transparent;
+}
+
+div#footer img {
+  padding: 0 0 0 9px;
+  vertical-align: middle;
+}
+
+div#footer li {
+  background: url(/css/gfx/submenu-split.png) no-repeat left center;
+}
+
+div#main {
+  float: left;
+  margin: 0 45px 0 0;
+  width: 623px;
+}
+
+div#main ol, div#main ul {
+  list-style: inside circle;
+  margin-bottom: 18px;
+}
+
+div#main .newsframe:first-child {
+  border: none;
+}
+
+div#main .newsframe {
+  border-bottom: 1px solid #303030;
+  padding: 3px 0 0 0;
+  color: #b6b2b5;
+}
+
+div#main .newsframe h2 {
+  width: 623px;
+}
+
+div#main .newsframe div img {
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+div#main .newsframe.partners * {
+  margin: 0;
+  padding: 0;
+}
+
+div#main .expand_newsframe {
+  float: right;
+  margin: 20px 0 0 0;
+}
+
+div#sidebar {
+  float: right;
+  width: 328px;
+}
+
+div#sidebar h2 {
+  padding: 14px 0 10px 0;
+  margin: 0 0 7px 0;
+  color: #eb0c8b;
+  border: none;
+  width: 100%;
+}
+
+div#sidebar h2 .follow {
+  padding-top: 14px;
+  float: right;
+  margin: 0;
+  font: lighter italic 12px/14px Helvetica Neue, Helvetica, Verdana, Arial, sans-serif;
+  color: #b6b2b5;
+}
+
+/* misc */
+
+.timestamp {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.italic {
+  font-style: italic;
+  font-weight: bold;
+}
+
+p.small {
+  clear: both;
+  font-size: 10px;
+  color: #b6b2b5;
+}
+
+p.ingress { font-size: 22px; }
+
+.accent {
+  background-color: #ebffff;
+
+  color: #333333;
+  padding: 3px 0;
+}
+
+hr {
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
+/* ******************************************************************** */
+/* Clearfix: http://csscreator.com/attributes/containedfloat.php        */
+/* ******************************************************************** */
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.clearfix {
+  display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+/* End hide from IE-mac */
+
+/* ################## */
+/* TWITTER            */
+/* ################## */
+.twitted {
+  width: 360px;
+  margin-bottom: 1em;
+}
+
+.twitted h2 {
+  margin: 0;
+  padding: 0.3em 0;
+  font-size: 1em;
+}
+
+.twitted p.preLoader {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.twitted ul#twitter_update_list {
+  margin: 0;
+  list-style-type: none;
+  border-top: 8px solid #303030;
+}
+
+.twitted ul#twitter_update_list li {
+  margin: 0;
+  padding: 0.8em 0 1em 0;
+  border-bottom: 1px solid #303030;
+}
+
+.twitted ul#twitter_update_list li span {
+/* tweet content */
+}
+
+.twitted ul#twitter_update_list li span a {
+/* links in tweet content */
+}
+
+.twitted ul#twitter_update_list li a {
+/* timestamp link */
+}
+
+.twitted ul#twitter_update_list li.firstTweet {
+}
+
+.twitted ul#twitter_update_list li.lastTweet {
+  border-bottom: none;
+}
+
+.twitted p.profileLink {
+  display: none;
+}
+
+/* ################## */
+/* JQUERY LIGHTBOX    */
+/* ################## */
+/**
+ * jQuery lightBox plugin
+ * This jQuery plugin was inspired and based on Lightbox 2 by Lokesh Dhakar (http://www.huddletogether.com/projects/lightbox2/)
+ * and adapted to me for use like a plugin from jQuery.
+ * @name jquery-lightbox-0.5.css
+ * @author Leandro Vieira Pinho - http://leandrovieira.com
+ * @version 0.5
+ * @date April 11, 2008
+ * @category jQuery plugin
+ * @copyright (c) 2008 Leandro Vieira Pinho (leandrovieira.com)
+ * @license CC Attribution-No Derivative Works 2.5 Brazil - http://creativecommons.org/licenses/by-nd/2.5/br/deed.en_US
+ * @example Visit http://leandrovieira.com/projects/jquery/lightbox/ for more informations about this jQuery plugin
+ */
+#jquery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 100%;
+  height: 500px;
+}
+
+#jquery-lightbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  text-align: center;
+  line-height: 0;
+}
+
+#jquery-lightbox a img {
+  border: none;
+}
+
+#lightbox-container-image-box {
+  position: relative;
+  background-color: #fff;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+}
+
+#lightbox-container-image {
+  padding: 10px;
+}
+
+#lightbox-loading {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  height: 25%;
+  width: 100%;
+  text-align: center;
+  line-height: 0;
+}
+
+#lightbox-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+}
+
+#lightbox-container-image-box > #lightbox-nav {
+  left: 0;
+}
+
+#lightbox-nav a {
+  outline: none;
+}
+
+#lightbox-nav-btnPrev, #lightbox-nav-btnNext {
+  width: 49%;
+  height: 100%;
+  zoom: 1;
+  display: block;
+}
+
+#lightbox-nav-btnPrev {
+  left: 0;
+  float: left;
+}
+
+#lightbox-nav-btnNext {
+  right: 0;
+  float: right;
+}
+
+#lightbox-container-image-data-box {
+  font: 10px Verdana, Helvetica, sans-serif;
+  background-color: #fff;
+  margin: 0 auto;
+  line-height: 1.4em;
+  overflow: auto;
+  width: 100%;
+  padding: 0 10px 0;
+}
+
+#lightbox-container-image-data {
+  padding: 0 10px;
+  color: #666;
+}
+
+#lightbox-container-image-data #lightbox-image-details {
+  width: 70%;
+  float: left;
+  text-align: left;
+}
+
+#lightbox-image-details-caption {
+  font-weight: bold;
+}
+
+#lightbox-image-details-currentNumber {
+  display: block;
+  clear: left;
+  padding-bottom: 1.0em;
+}
+
+#lightbox-secNav-btnClose {
+  width: 66px;
+  float: right;
+  padding-bottom: 0.7em;
+}
+
+
+#partner-logos img {
+  padding: 1px 5px 0 0;
+}
+
+div.person {
+    display:-moz-inline-stack;
+    display:inline-block;
+    zoom:1;
+    *display:inline;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.person img {
+    width: 202px;
+    height: 142px;
+    overflow: hidden;
+}
+
+.popup {
+  display: none;
+}
+
+dl.table-display {
+  padding:0;
+  margin:0;
+  float:left;
+}
+
+.table-display dt {
+  clear: left;
+  float: left;
+  width: 40px;
+  margin: 0;
+  padding: 2px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.table-display dd {
+  float: left;
+  width: 150px;
+  margin: 0;
+  padding: 2px;
+  text-align: left;
+}
+
+
+
+#tooltip.pretty {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+#tooltip {
+    position: absolute;
+    z-index: 3000;
+    border: 1px solid #111;
+    background-color: #eee;
+    padding: 5px;
+    opacity: 0.85;
+    color: black;
+}
+
+#tooltip h3, #tooltip div {
+  margin: 0;
+}

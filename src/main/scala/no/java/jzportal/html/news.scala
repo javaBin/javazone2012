@@ -7,8 +7,7 @@ import no.java.jzportal.twitter.JzTweet
 
 object news {
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], response: OpenSearchResponse) = default(topPages, tweets,
-    <div id="main">
-      <h1>News</h1>
+    <div class="news">
       {
         val pages = response.page.map(entryToHtml)
         pages.foldLeft(NodeSeq.Empty)((news, nodes) => nodes ++ news)
@@ -18,8 +17,7 @@ object news {
   )
 
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], newsEntry: CmsEntry) = default(topPages, tweets,
-    <div id="main">
-      <h1>News</h1>
+    <div class="news">
       {entryToHtml(newsEntry)}
     </div>
   )

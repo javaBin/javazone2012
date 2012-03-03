@@ -22,3 +22,4 @@ target
 db
 logging.properties
 .DS_Store
+.history

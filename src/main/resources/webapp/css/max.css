@@ -1,0 +1,106 @@
+@media screen and (min-width: 1350px) {
+
+/* ----------------------------------------------------- */
+
+.min, .med {
+    display:none;
+}
+
+#c1 {
+    background:url("../img/right.png") top right no-repeat;
+}
+
+#sidesplash {
+    position:absolute;
+    width:300px;
+    height:100%;
+    left:-100px;
+    background:url("../img/sidesplash.png") 0 0 no-repeat;
+    animation: swingy 2s linear infinite alternate;
+    -moz-animation: swingy 2s linear infinite alternate;
+    -webkit-animation: swingy 2s linear infinite alternate; 
+    z-index:1;
+}
+
+#side {
+    position:fixed;
+    top:0;
+    left:-100px;
+    background:url("../img/side.png") 0px 0px repeat-y;
+    width:300px;
+    height:100%;
+    z-index:0;
+}
+
+#splashlogo {
+    position:absolute;
+    left:1060px;
+    top:40px;
+    width:280px;
+    z-index:2;
+}
+
+#longtext {
+    position:absolute;
+    top:50px;
+    left:187px;
+    z-index:100;
+}
+
+#menu {
+    position:absolute;
+    left:200px;
+    top:190px;
+    z-index:100;
+}
+
+#menu div {
+    width:93px;
+    height:93px;
+}
+
+#main {
+    padding-top:330px;
+    padding-left:200px;
+    max-width:1300px;
+    z-index:100;
+}
+
+#main .body {
+    width:47%;
+    margin-right:1%;
+}
+
+#main .side {
+    width:25%;
+    margin-right:1%;
+    float:left;
+}
+
+#main .side2 {
+    width:25%;
+}
+
+#partners {
+    background:rgba(255,255,255,0.05);
+    padding:10px;
+    border-left:5px solid rgba(255,255,255,0.05); 
+}
+
+#partners img {
+    width:170px;
+}
+
+}
+
+@media screen and (min-width: 1800px) {
+
+    #longtext-vertical {
+        display:block;
+        position:absolute;
+        left:1550px;
+        top:330px;
+    }
+
+}
+
