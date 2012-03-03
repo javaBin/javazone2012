@@ -166,10 +166,10 @@ h2,h3 {
 }
 
 #main .body li {
-    background:rgba(0,0,0,0.05);
-    padding:10px 15px;
-    margin:0 0 2px 0;
-    border-left:10px solid rgba(255,255,255,0.05); 
+    background:rgba(255,255,255,0.05);
+    padding:5px 15px;
+    margin:0 0 2px 20px;
+    border-left:5px solid rgba(255,255,255,0.05);
 }
 
 .no-js #main {
