@@ -46,6 +46,10 @@ class JzPortalPlan extends Plan {
       cmsClient.fetchTopPages().foreach {dumpEntry(0)}
       Redirect("/news.html")
 
+    case Path(Seg("flush" :: Nil)) =>
+      cmsClient.flushCaches()
+      Redirect("/news.html")
+
     case Path(Seg("favicon.ico" :: Nil)) =>
       Redirect("http://java.no/favicon.ico")
 
@@ -88,7 +92,7 @@ class JzPortalPlan extends Plan {
   def renderNewsList(start: Option[String]) = {
     val offset = start.flatMap(parseInt).getOrElse(0)
 
-    val response = cmsClient.fetchEntriesForCategory("News", offset, pageSize)
+    val response = cmsClient.fetchEntriesForCategory("news", offset, pageSize)
     val topPages = cmsClient.fetchTopPages()
     val tweets = twitterClient.currentResults
 
