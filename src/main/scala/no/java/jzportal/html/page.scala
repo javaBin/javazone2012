@@ -8,7 +8,7 @@ object page {
   import Snippets._
 
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(topPages, tweets,
-    <div class="page">
+    <div class="body bigbody hyphenate">
       {siblings.map(siblings_(_)).getOrElse(NodeSeq.Empty)}
       {children.filter(!_.isEmpty).map(children_(_)).getOrElse(NodeSeq.Empty)}
       {page.content}
@@ -16,7 +16,7 @@ object page {
   )
 
   def siblings_(siblings: (CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])) = siblings match { case (parent, prev, item, next ) =>
-    <div id="submenu">
+    <div id="submenu" class="donthyphenate">
       <ul>
         {prev.map(entry => pageToLi(entry))}
         {pageToLi(item)}
@@ -26,7 +26,7 @@ object page {
   }
 
   def children_(children: List[CmsEntry]) = 
-    <div id="submenu">
+    <div id="submenu" class="donthyphenate">
       <ul>
         {children.map(entry => pageToLi(entry))}
       </ul>

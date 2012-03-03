@@ -65,12 +65,7 @@ object default {
 
     <div id="main">
       
-      <div class="body hyphenate">
-        {content}
-      </div>
-      <div class="side tweets">
-        {sidebar(tweets)}
-      </div>
+      {content}
 
       <div class="side side2">
         <h2><a href="#">About JavaZone</a></h2>
@@ -90,6 +85,7 @@ object default {
     </div>
 
     <div id="footer">
+      Footer
     </div>
 
     </div></div></div>
@@ -124,11 +120,4 @@ object default {
       <img class="message" src="/images/banner/news/message.png" alt="JavaZone 2011"/>
     </div>
 
-  def sidebar(tweets: List[JzTweet]) =
-    <h2>
-      <a href="http://twitter.com/javazone">#javazone</a>
-    </h2> 
-    <div id="twitter" class="twitted">
-      {tweets.map(Snippets.tweetToDiv)}
-    </div>
 }

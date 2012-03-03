@@ -12,7 +12,7 @@ body {
 #minsplash {
     display:block;
 	background:url("../img/splashclean.jpg") top center no-repeat;
-	padding:600px 50px 50px 50px;
+	padding:660px 50px 50px 50px;
     animation: swingy 2s linear infinite alternate;
     -moz-animation: swingy 2s linear infinite alternate;
     -webkit-animation: swingy 2s linear infinite alternate; 
@@ -67,6 +67,15 @@ body {
 	padding-top:60px;
 	font-size:18px;
 	font-weight:bold;
+}
+
+#main #submenu {
+	top:640px;
+	font-size:90%;
+}
+
+#main #submenu a {
+	padding:13px;
 }
 
 #main {

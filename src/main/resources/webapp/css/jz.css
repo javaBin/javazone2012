@@ -27,7 +27,7 @@ body, html {
     margin:0;
     padding:0;
     height:100%;
-    background:url("/img/tile.png");
+    background:#222 url("/img/tile.png");
     color:#fff;
     font-size:18px;
 }
@@ -121,32 +121,45 @@ h2 span, h3 span {
     text-shadow:1px 1px 1px rgba(0,0,0,0.8);
 }
 
-#submenu {
+#main #submenu {
     font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
-    margin-top:-20px;
-    padding:0 0 20px 0;
-    list-style-type:none;
-}
-
-#submenu li {
-    display:inline;
-}
-#submenu a {
-    color:#fff;
-    text-decoration:none;
     text-transform:uppercase;
-    text-shadow:1px 1px 1px rgba(0,0,0,0.4);
-    font-size:18px;
     font-weight:bold;
-    background:rgba(0,0,0,0.2);
-    border-bottom:1px solid rgba(0,0,0,0.3); 
-    border-right:1px solid rgba(0,0,0,0.3); 
-    padding:10px 20px;
-    text-shadow:0 0 20px rgba(255,255,255,0.3);
+    padding:0 0 70px 0;
+    list-style-type:none;
+    text-align:left;
+    font-size:20px;
+    position:absolute;
+    top:290px;
 }
 
-#submenu a:hover {
-    background:#000;
+#main #submenu ul {
+    padding:0;
+    margin:0;
+}
+
+#main #submenu li {
+    display:inline;
+    background:none;
+    padding:0;
+    margin:0;
+    text-align:left;
+    border:none;
+    border-left:none;
+}
+#main #submenu a {
+    color:#fff;
+    border:none;
+    background:rgba(0,0,0,0.2);
+    padding:5px 20px;
+    float:left;
+    display:block;
+    margin:0 1px 0 0;
+}
+
+#main #submenu a:hover {
+    background:#fff;
+    color:#000;
 }
 
 
@@ -292,11 +305,11 @@ h2 span, h3 span {
     background:rgba(0,0,0,0.2);
 }
 
-#partners p {
+#partners {
     margin-bottom:20px; 
     background:none;
     border:none;
-    padding:0;
+    padding:20px 0;
 }
 
 #partners a {
@@ -310,6 +323,8 @@ h2 span, h3 span {
 
 #partners img {
     width:100%;
+    box-shadow:none;
+    opacity:0.9;
 }
 
 #partners img:hover {

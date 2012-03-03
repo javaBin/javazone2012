@@ -7,15 +7,20 @@ import no.java.jzportal.twitter.JzTweet
 
 object news {
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], response: OpenSearchResponse) = default(topPages, tweets,
-    <div class="news">
-      {
-        val pages = response.page.map(entryToHtml)
-        pages.foldLeft(NodeSeq.Empty)((news, nodes) => nodes ++ news)
-      }
-      <div class="morelink">
-        {readMoreLink(response, response.index)}
+    <div class="body hyphenate">
+      <div class="news">
+        {
+          val pages = response.page.map(entryToHtml)
+          pages.foldLeft(NodeSeq.Empty)((news, nodes) => nodes ++ news)
+        }
+        <div class="morelink">
+          {readMoreLink(response, response.index)}
+        </div>
       </div>
     </div>
+    <div class="side tweets">
+      {sidebar(tweets)}
+    </div>    
   )
 
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], newsEntry: CmsEntry) = default(topPages, tweets,
@@ -23,4 +28,13 @@ object news {
       {entryToHtml(newsEntry)}
     </div>
   )
+
+  def sidebar(tweets: List[JzTweet]) =
+    <h2>
+      <a href="http://twitter.com/javazone">#javazone</a>
+    </h2> 
+    <div id="twitter" class="twitted">
+      {tweets.map(Snippets.tweetToDiv)}
+    </div>
+
 }
