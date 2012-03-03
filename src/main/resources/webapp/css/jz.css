@@ -65,6 +65,13 @@ h2 span, h3 span {
     text-shadow:none;
 }
 
+hr {
+    background:none;
+    color:#222;
+    border:none;
+    height:20px;
+}
+
 .clear {
     clear:both;
 }
