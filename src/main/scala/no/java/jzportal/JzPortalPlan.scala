@@ -64,7 +64,7 @@ class JzPortalPlan extends Plan {
           logger.info("Not found: /webapp" + p)
           val topPages = cmsClient.fetchTopPages()
           val tweets = twitterClient.currentResults
-          NotFound ~> Html(notFound(topPages, tweets, p))
+          NotFound ~> Html5(notFound(topPages, tweets, p))
       }
   }
 
@@ -82,23 +82,23 @@ class JzPortalPlan extends Plan {
   def newsIntent = Intent {
     case Path(Seg("news.html" :: Nil)) & Params(params) =>
       val start = params.get("start").flatMap(_.headOption)
-      Ok ~> Html(renderNewsList(start))
+      Ok ~> Html5(renderNewsList(start))
 
     case Path(Seg("news" :: slug :: Nil)) & Path(p) =>
       val s = slug.replaceFirst("\\.html$", "")
       renderNewsItem(s) match {
         case Some((entry, html)) =>
-          Ok ~> HeadersFromEntry(entry) ~> Html(html)
+          Ok ~> HeadersFromEntry(entry) ~> Html5(html)
         case None =>
           val topPages = cmsClient.fetchTopPages()
           val tweets = twitterClient.currentResults
-          NotFound ~> Html(notFound(topPages, tweets, p))
+          NotFound ~> Html5(notFound(topPages, tweets, p))
       }
   }
 
   def pagesIntent = Intent {
     case Page(page) & Path(path) =>
-      Ok ~> Html(renderPage(page))
+      Ok ~> Html5(renderPage(page))
   }
 
   def renderNewsList(start: Option[String]) = {
