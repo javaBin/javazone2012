@@ -53,7 +53,7 @@ var randomizepartners = function() {
     var partners = shuffle($("#partners a"));
     $("#partners").html("");
     for(var i = 0; i < partners.length; i++) {
-        $("#partners").prepend(partners[i]);
+        $("#partners").append(partners[i]);
     }
 };
 
