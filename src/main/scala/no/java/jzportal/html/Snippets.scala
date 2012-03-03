@@ -27,15 +27,10 @@ object Snippets {
   }
 
   def entryToHtml(entry: CmsEntry) =
-    <div class="newsframe">
-      {entry.updatedOrPublished.map(date => <span class="timestamp">{postDateTimeFormatter.print(date)}</span>).getOrElse(NodeSeq.Empty)}
-      <div class="expand_newsframe">
-          <a href={ "/news/" + entry.slug + ".html" }>
-            <img src="/images/expand.png" alt="co" title="Open"/>
-          </a>
-      </div>
-      <h2>{entry.title}</h2>
-      <div>{entry.content}</div>  
+    <div class="news">
+      <h3><a href={ "/news/" + entry.slug + ".html" }>{entry.title}</a></h3>
+      {entry.content}
+      <p>{entry.updatedOrPublished.map(date => <span class="timestamp">{postDateTimeFormatter.print(date)}</span>).getOrElse(NodeSeq.Empty)}</p>
     </div>
 
   def tweetToDiv(tweet: JzTweet): NodeSeq =

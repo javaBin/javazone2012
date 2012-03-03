@@ -184,7 +184,8 @@ h2,h3 {
     margin:0 0 2px 0;
 }
 
-#main h3 {
+#main .news h3,
+#main .news h3 a {
     border-left-color:#88dd00;
     color:#88dd00;
 }
@@ -234,6 +235,13 @@ h2,h3 {
 
 #main .news p {
     border-left-color:rgba(255,255,255,0.1);
+}
+
+#main .morelink {
+    background:rgba(255,255,255,0.05);
+    padding:15px;
+    margin:0 0 2px 0;
+    border-left:5px solid rgba(255,255,255,0.1); 
 }
 
 #footer {

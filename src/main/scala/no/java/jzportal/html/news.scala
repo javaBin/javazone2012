@@ -12,7 +12,9 @@ object news {
         val pages = response.page.map(entryToHtml)
         pages.foldLeft(NodeSeq.Empty)((news, nodes) => nodes ++ news)
       }
-      {readMoreLink(response, response.index)}
+      <div class="morelink">
+        {readMoreLink(response, response.index)}
+      </div>
     </div>
   )
 
