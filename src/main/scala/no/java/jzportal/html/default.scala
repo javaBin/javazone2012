@@ -110,7 +110,7 @@ object default {
       <div id="menuelement-4" class="high">{topPages.lift(3).flatten}</div>
       <div id="menuelement-5">{topPages.lift(4).flatten}</div>
       <div id="menuelement-6">{topPages.lift(5).flatten}</div>
-      <div id="menuelement-7" class="high">{topPages.lift(6).flatten}</div>
+      <div id="menuelement-7" class="high last">{topPages.lift(6).flatten}</div>
     </div>
   }
 

@@ -88,6 +88,12 @@ var changeHeaderColors = function() {
     }
 };
 
+var resizeIframe = function() {
+    $("iframe").each(function() {
+        $(this).css("width", $(this).parent().width() - 35);
+    });
+};
+
 $(function() {
     $("html").removeClass("no-js");
 
@@ -128,4 +134,6 @@ $(function() {
 
     changeHeaderColors();
     randomizepartners();
+    resizeIframe();
+    $(window).resize(resizeIframe);
 });
