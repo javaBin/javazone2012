@@ -94,14 +94,6 @@ object default {
     </div>
 
     <div id="footer">
-      <a href="/">Home</a>
-      <a href="/">Tickets</a>
-      <a href="/">Program</a>
-      <a href="/about.html">About</a>
-      <a href="/">Info</a>
-      <a href="/">Video</a>
-      <a href="/">Contact</a>
-      <a href="/">Twitter</a>
     </div>
 
     </div></div></div>
