@@ -1,0 +1,88 @@
+@media screen and (max-width: 859px){
+
+.max, .med {
+    display:none;
+}
+
+body {
+    min-width:460px;
+    font-size:22px;
+}
+
+#minsplash {
+    display:block;
+	background:url("../img/splashclean.jpg") top center no-repeat;
+	padding:600px 50px 50px 50px;
+    animation: swingy 2s linear infinite alternate;
+    -moz-animation: swingy 2s linear infinite alternate;
+    -webkit-animation: swingy 2s linear infinite alternate; 
+}
+
+#sidesplashtext {
+	display:none;
+}
+
+#splashlogo {
+	position:absolute;
+	top:20px;
+	left:50%;
+	margin-left:-170px;
+}
+
+#line {
+	text-shadow:0 0 8px rgba(0,0,0,1);
+	position:absolute;
+	top:310px;
+	left:0;
+	font-size:24px;
+	width:100%;
+	text-align:center;
+    font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
+    z-index:500;
+}
+
+#line a {
+	color:#fff;
+}
+
+#menu {
+	position:absolute;
+	top:400px;
+	width:520px;
+	left:50%;
+	margin-left:-251px;
+}
+
+#menu .middle {
+	clear:left;
+}
+
+#menu div {
+	margin-bottom:30px;
+	width:115px;
+	height:105px;
+}
+
+#menu div a {
+	padding-top:60px;
+	font-size:18px;
+	font-weight:bold;
+}
+
+#main {
+	padding:0 0 50px 0;
+	max-width:500px;
+	margin:0 auto;
+}
+
+#main .side, #main .body {
+	float:left;
+	width:100%;
+	margin-bottom:20px;
+}
+
+#partners img {
+    width:165px;
+}
+
+}
