@@ -27,7 +27,7 @@ body, html {
     margin:0;
     padding:0;
     height:100%;
-    background:url("../img/tile.png");
+    background:url("/img/tile.png");
     color:#fff;
     font-size:18px;
 }
@@ -145,7 +145,7 @@ h2,h3 {
 
 
 #c1 {
-    background:url("../img/tbg.png") bottom center no-repeat;
+    background:url("/img/tbg.png") bottom center no-repeat;
     padding:0 0 50px 0;
 }
 
@@ -234,7 +234,7 @@ h2,h3 {
     position:fixed;
     bottom:0;
     left:0;
-    background:url("../img/tbg.png") fixed bottom center no-repeat;
+    background:url("/img/tbg.png") fixed bottom center no-repeat;
     height:100%;
     width:100%;
 }

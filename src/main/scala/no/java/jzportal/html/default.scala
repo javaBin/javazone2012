@@ -8,8 +8,7 @@ object default {
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], content: NodeSeq) =
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
-      <title>JavaZone 2021</title>
-
+      <title>JavaZone 2012</title>
       <meta name = "viewport" content = "initial-scale = 0.6, user-scalable = no" /> 
       <link rel="stylesheet" href="/css/style.css" />
       <link rel="stylesheet" href="/css/jz.css" />
@@ -17,15 +16,12 @@ object default {
       <link rel="stylesheet" href="/css/med.css" />
       <link rel="stylesheet" href="/css/max.css" />
       <script type="text/javascript" src="http://use.typekit.com/vtw8zbt.js"></script>
-
       <script type="text/javascript">{" try{Typekit.load();}catch(e){} "}</script>
-
       <link href="http://jz11.java.no/atom.xml" title="JavaZone nyheter" type="application/atom+xml" rel="alternate"/>
       <base/>
       <!--[if IE]><script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     </head>
     <body lang="en">
-
 
     <div id="line" class="min">
       <a href="#">12-13 Sept 2012</a>
@@ -39,19 +35,19 @@ object default {
 
 
     <a class="max" href="/">
-      <img src="img/longtext.png" id="longtext" />
+      <img src="/img/longtext.png" id="longtext" />
     </a>
 
     <a class="max" href="/">
-      <img src="img/longtext-vertical.png" class="hide" id="longtext-vertical" />
+      <img src="/img/longtext-vertical.png" class="hide" id="longtext-vertical" />
     </a>
 
     <a class="med" href="/">
-      <img src="img/text.png" id="text-horizontal" />
+      <img src="/img/text.png" id="text-horizontal" />
     </a>
 
     <a href="/">
-      <img src="img/splashlogo.png" id="splashlogo" />
+      <img src="/img/splashlogo.png" id="splashlogo" />
     </a>
 
     <div id="c1"><div id="c2"><div id="c4">
@@ -100,7 +96,7 @@ object default {
     <div class="clear"></div>
     <script src="/js/libs/jquery-1.6.2.min.js"></script>
     <script src="/js/libs/jquery.color.js"></script>
-    <script src="/js/libs/jquery.backgroundparallax.js"></script>
+    <script src="/js/libs/respond.min.js"></script>
     <script src="/js/hyphenator.js"></script>
     <script src="/js/script.js"></script>
     </body>
