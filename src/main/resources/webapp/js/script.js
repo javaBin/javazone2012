@@ -95,32 +95,29 @@ $(function() {
     Hyphenator.run();
 
     // Animate menu.
-    var original = "-10px";
-    $("#menu div").hover(function() {
-        original = $(this).css("margin-top");
-        $(this).animate({marginTop:"-20px", opacity:1},{queue:false,duration:100});
-    }, function() {        
-        $(this).animate({marginTop:original, opacity:0.9},{queue:false,duration:100});
-    });
-
+    if(!isMobile()) {
+        var original = "-10px";
+        $("#menu div").hover(function() {
+            original = $(this).css("margin-top");
+            $(this).animate({marginTop:"-20px", opacity:1},{queue:false,duration:100});
+        }, function() {        
+            $(this).animate({marginTop:original, opacity:0.9},{queue:false,duration:100});
+        });    
+    }
+    
     // Parallax headers.
-    (function () {
-        if(isMobile()) {
-            return;
-        }
-        var next, part;
-        $(window).scroll(function(){
-            next = - parseInt($(this).scrollTop(), 10) * 0.5;
-            part = next * 0.5;
-            $("#splash").css("background-position-y", "" + next + "px");
-            $("#top").css("background-position-y", "" + next + "px");
-
-
-            $("#sidesplash").css("background-position-y", "" + next + "px");
-            $("#sidesplash").css("background-position-x", "" + part + "px");
-            $("#side").css("background-position-x", "" + part + "px");
-        });
-    }());
+    if(!isMobile()) {
+        (function () {
+            var next, part;
+            $(window).scroll(function(){
+                next = - parseInt($(this).scrollTop(), 10) * 0.5;
+                part = next * 0.5;
+                $("#splash").css("background-position", "50% " + next + "px");
+                $("#sidesplash").css("background-position", "" + part + "px " + next + "px");
+                $("#side").css("background-position", "" + part + "px " + next + "px");
+            });
+        }());
+    }
 
     // Fade in content.
     if(isMobile()) {
