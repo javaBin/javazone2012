@@ -15,7 +15,7 @@ import unfiltered.response._
 
 import org.slf4j._
 import org.constretto._
-import org.constretto.ScalaValueConverter._
+import org.constretto.Converter._
 import org.apache.commons.io.IOUtils
 import unfiltered.request._
 

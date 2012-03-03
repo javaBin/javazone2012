@@ -8,7 +8,6 @@ import com.github.siasia.WebPlugin
 object JavaZonePortal extends Build {
 
   val logbackVersion = "0.9.18"
-  val abderaVersion = "1.1.2"
   val unfilteredVersion = "0.5.1"
 
   lazy val buildSettings = Defaults.defaultSettings ++ Seq(
