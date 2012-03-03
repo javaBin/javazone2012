@@ -3,6 +3,7 @@ package no.java.jzportal
 import java.io._
 import java.net._
 import javax.servlet.FilterConfig
+import org.joda.time.format._
 import no.arktekk.cms.{Logger => CmsLogger, _}
 import no.arktekk.cms.CmsUtil._
 import no.arktekk.cms.atompub._
@@ -34,7 +35,7 @@ class JzPortalPlan extends Plan {
   }
 
   def dumpEntry(indent: Int)(entry: CmsEntry) {
-    println("".padTo(indent, '-') + "Title=" + entry.title + ", slug=" + entry.slug)
+    println("".padTo(indent, '-') + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories)
     cmsClient.fetchChildrenOf(entry.slug).foreach{_.foreach{dumpEntry(indent + 1)}}
   }
 
@@ -67,6 +68,17 @@ class JzPortalPlan extends Plan {
       }
   }
 
+  case class HeadersFromEntry(entry: CmsEntry) extends Responder[Any] {
+//    def toString(dateTime: DateTime) = {
+//    }
+
+    def respond(res: HttpResponse[Any]) {
+      res.header("Cache-Control", "public, must-revalidate")
+
+//      entry.updatedOrPublished.foreach(dateTime => res.header("Last-Modified", toString(dateTime)))
+    }
+  }
+
   def newsIntent = Intent {
     case Path(Seg("news.html" :: Nil)) & Params(params) =>
       val start = params.get("start").flatMap(_.headOption)
@@ -75,8 +87,8 @@ class JzPortalPlan extends Plan {
     case Path(Seg("news" :: slug :: Nil)) & Path(p) =>
       val s = slug.replaceFirst("\\.html$", "")
       renderNewsItem(s) match {
-        case Some(html) =>
-          Ok ~> Html(html)
+        case Some((entry, html)) =>
+          Ok ~> HeadersFromEntry(entry) ~> Html(html)
         case None =>
           val topPages = cmsClient.fetchTopPages()
           val tweets = twitterClient.currentResults
@@ -99,11 +111,11 @@ class JzPortalPlan extends Plan {
     news(topPages, tweets, response)
   }
 
-  def renderNewsItem(slug: String): Option[NodeSeq] = for {
+  def renderNewsItem(slug: String): Option[(CmsEntry, NodeSeq)] = for {
     post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
     val topPages = cmsClient.fetchTopPages()
     val tweets = twitterClient.currentResults
-  } yield news(topPages, tweets, post)
+  } yield (post, news(topPages, tweets, post))
 
   def renderPage(p: CmsEntry) = {
     val siblings = for {
