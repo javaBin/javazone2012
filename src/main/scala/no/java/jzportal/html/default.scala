@@ -78,10 +78,10 @@ object default {
 
     <div id="footer">
       <p>
-      <a href="#"><img src="/img/social/twitter.png" /></a>
-      <a href="#"><img src="/img/social/facebook.png" /></a>
-      <a href="#"><img src="/img/social/youtube.png" /></a>
-      <a href="#"><img src="/img/social/vimeo.png" /></a>
+      <a href="http://twitter.com/#!/javazone"><img src="/img/social/twitter.png" /></a>
+      <a href="http://www.facebook.com/javabin"><img src="/img/social/facebook.png" /></a>
+      <a href="http://www.youtube.com/user/JavaZoneNo"><img src="/img/social/youtube.png" /></a>
+      <a href="http://vimeo.com/javazone/videos"><img src="/img/social/vimeo.png" /></a>
       </p>
       <p class="text">Designed by <a href="#">Accenture Creative Services</a></p>
     </div>
