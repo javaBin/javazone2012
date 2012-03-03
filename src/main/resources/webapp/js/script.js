@@ -92,6 +92,7 @@ var changeHeaderColors = function() {
 };
 
 $(function() {
+    $("html").removeClass("no-js");
 
     // Hyphenation of paragraphs.
     Hyphenator.run();
@@ -125,11 +126,11 @@ $(function() {
     }());
 
     // Fade in content.
-    $("html").removeClass("no-js");
-    $("#menu").fadeIn("slow");
-    $("#main").fadeIn("slow");
-    $("#side").fadeIn("slow");
-    $("#sidesplash").fadeIn("slow");
+    if(isMobile()) {
+        $("#menu, #main, #side, #sidesplash").show();
+    } else {
+        $("#menu, #main, #side, #sidesplash").fadeIn("slow");
+    }
 
     changeHeaderColors();
     randomizepartners();
