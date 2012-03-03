@@ -53,14 +53,14 @@ object default {
     <div id="c1"><div id="c2"><div id="c4">
 
     <div id="menu">
-      <div id="menuelement-0"><a href="/">Home</a></div>
-      <div id="menuelement-1" class="high"><a href="/">Tickets</a></div>
-      <div id="menuelement-2" class="high"><a href="/">Program</a></div>
-      <div id="menuelement-3"><a href="/about.html">Info</a></div>
-      <div id="menuelement-4" class="high middle"><a href="/">Partners</a></div>
-      <div id="menuelement-5"><a href="/">Video</a></div>
-      <div id="menuelement-6"><a href="/">Contact</a></div>
-      <div id="menuelement-7" class="high last"><a href="/">Twitter</a></div>
+      <div id="menuelement-0"><a href="/">News</a></div>
+      <div id="menuelement-1" class="high"><a href="/program.html">Program</a></div>
+      <div id="menuelement-2" class="high"><a href="/tickets.html">Tickets</a></div>
+      <div id="menuelement-3"><a href="/speakers.html">Speakers</a></div>
+      <div id="menuelement-4" class="high middle"><a href="/partners.html">Partners</a></div>
+      <div id="menuelement-5"><a href="/awezone.html">AweZone</a></div>
+      <div id="menuelement-6"><a href="/videos.html">Videos</a></div>
+      <div id="menuelement-7" class="high last"><a href="/about.html">Info</a></div>
     </div>
 
     <div id="main">
