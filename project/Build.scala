@@ -69,7 +69,7 @@ object JavaZonePortal extends Build {
         "no.javabin" %% "atom2twitterpublisher" % "1.1",
         "no.arktekk.atom-client" %% "atom-client-core" % "1.1-SNAPSHOT",
 
-        "org.constretto" %% "constretto-scala" % "1.0-SNAPSHOT",
+        "org.constretto" %% "constretto-scala" % "1.0",
 
         "log4j" % "log4j" % "1.2.16",
         "org.slf4j" % "slf4j-log4j12" % "1.6.1",
