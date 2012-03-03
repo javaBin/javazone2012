@@ -21,7 +21,7 @@ import unfiltered.request._
 
 // TODO: Wrap an unfiltered kit around this plan that prevent all methods except GET (and possibly HEAD)
 class JzPortalPlan extends Plan {
-  val pageSize = Positive.fromInt(2)
+  val pageSize = Positive.fromInt(10)
 
   var logger: Logger = null
   var cmsClient: CmsClient = null
