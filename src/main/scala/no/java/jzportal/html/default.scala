@@ -53,18 +53,6 @@ object default {
 
     <div id="c1"><div id="c2"><div id="c4">
 
-    /*
-    <div id="menu">
-      <div id="menuelement-0"><a href="/">News</a></div>
-      <div id="menuelement-1" class="high"><a href="/program.html">Program</a></div>
-      <div id="menuelement-2" class="high"><a href="/tickets.html">Tickets</a></div>
-      <div id="menuelement-3"><a href="/speakers.html">Speakers</a></div>
-      <div id="menuelement-4" class="high middle"><a href="/partners.html">Partners</a></div>
-      <div id="menuelement-5"><a href="/awezone.html">AweZone</a></div>
-      <div id="menuelement-6"><a href="/videos.html">Videos</a></div>
-      <div id="menuelement-7" class="high last"><a href="/about.html">Info</a></div>
-    </div>
-    */
     {menu(topPages)}
 
     <div id="main">
@@ -107,19 +95,6 @@ object default {
     <script src="/js/script.js"></script>
     </body>
     </html>
-
-  /*
-      <div id="menu">
-      <div id="menuelement-0"><a href="/">News</a></div>
-      <div id="menuelement-1" class="high"><a href="/program.html">Program</a></div>
-      <div id="menuelement-2" class="high"><a href="/tickets.html">Tickets</a></div>
-      <div id="menuelement-3"><a href="/speakers.html">Speakers</a></div>
-      <div id="menuelement-4" class="high middle"><a href="/partners.html">Partners</a></div>
-      <div id="menuelement-5"><a href="/awezone.html">AweZone</a></div>
-      <div id="menuelement-6"><a href="/videos.html">Videos</a></div>
-      <div id="menuelement-7" class="high last"><a href="/about.html">Info</a></div>
-    </div>
-   */
 
   def menu(topPages: List[CmsEntry]): NodeSeq = {
     implicit def f(o: Option[CmsEntry]): NodeSeq = o match {

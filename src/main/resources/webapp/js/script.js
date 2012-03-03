@@ -80,7 +80,7 @@ var changeHeaderColors = function() {
     for (var i = daysLeftBinary.length - 1; i >= 0; i--) {
         if(daysLeftBinary[i] == 1) {
             //console.log("Gjør menyelement " + menuElementToModify + " blått.");
-            $("#menuelement-" + menuElementToModify).animate({backgroundColor: "#00aced"}, 2000);
+            $("#menuelement-" + menuElementToModify).css({backgroundColor: "#00aced"},{queue:false,duration:100});
         } else {
             //console.log("Gjør menyelement " + menuElementToModify + " grønt.");
         }
@@ -121,9 +121,9 @@ $(function() {
 
     // Fade in content.
     if(isMobile()) {
-        $("#menu, #main, #side, #sidesplash").show();
+        $("#main, #side, #sidesplash").show();
     } else {
-        $("#menu, #main, #side, #sidesplash").fadeIn("slow");
+        $("#main, #side, #sidesplash").fadeIn("slow");
     }
 
     changeHeaderColors();

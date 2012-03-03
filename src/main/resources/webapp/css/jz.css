@@ -80,12 +80,7 @@ h2 span, h3 span {
 
 
 #menu {
-    display:none;
     font-family: "proxima-nova-condensed",helvetica,arial,sans-serif;
-}
-
-.no-js #menu {
-    display:block;
 }
 
 #menu div {
@@ -115,6 +110,7 @@ h2 span, h3 span {
     text-shadow:1px 1px 1px rgba(0,0,0,0.4);
     font-size:16px;
     font-weight:bold;
+    background:none;
 }
 
 #menu a:active {
