@@ -35,7 +35,7 @@ object Snippets {
           </a>
       </div>
       <h2>{entry.title}</h2>
-      <div>{entry.content}</div>
+      <div>{entry.content}</div>  
     </div>
 
   def tweetToDiv(tweet: JzTweet): NodeSeq =

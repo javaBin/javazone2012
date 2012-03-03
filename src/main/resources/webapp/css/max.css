@@ -91,6 +91,10 @@
     width:170px;
 }
 
+#footer {
+    padding-left:200px;
+}
+
 }
 
 @media screen and (min-width: 1800px) {

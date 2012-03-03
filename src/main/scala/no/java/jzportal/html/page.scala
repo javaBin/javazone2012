@@ -8,10 +8,10 @@ object page {
   import Snippets._
 
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(topPages, tweets,
-    <div id="main">
+    <div class="page">
       {siblings.map(siblings_(_)).getOrElse(NodeSeq.Empty)}
       {children.filter(!_.isEmpty).map(children_(_)).getOrElse(NodeSeq.Empty)}
-      <h1>{page.title}</h1>
+      <h2>{page.title}</h2>
       <div>{page.content}</div>
     </div>
   )

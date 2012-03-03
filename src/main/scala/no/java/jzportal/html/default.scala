@@ -8,7 +8,7 @@ object default {
   def apply(topPages: List[CmsEntry], tweets: List[JzTweet], content: NodeSeq) =
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
-      <title>JavaZone 2020</title>
+      <title>JavaZone 2021</title>
 
       <meta name = "viewport" content = "initial-scale = 0.6, user-scalable = no" /> 
       <link rel="stylesheet" href="/css/style.css" />
@@ -58,13 +58,13 @@ object default {
 
     <div id="menu">
       <div id="menuelement-0"><a href="/">Home</a></div>
-      <div id="menuelement-1" class="high"><a href="#">Tickets</a></div>
-      <div id="menuelement-2" class="high"><a href="#">Program</a></div>
-      <div id="menuelement-3"><a href="#">Info</a></div>
-      <div id="menuelement-4" class="high middle"><a href="#">Partners</a></div>
-      <div id="menuelement-5"><a href="#">Video</a></div>
-      <div id="menuelement-6"><a href="#">Contact</a></div>
-      <div id="menuelement-7" class="high last"><a href="#">Twitter</a></div>
+      <div id="menuelement-1" class="high"><a href="/">Tickets</a></div>
+      <div id="menuelement-2" class="high"><a href="/">Program</a></div>
+      <div id="menuelement-3"><a href="/about.html">Info</a></div>
+      <div id="menuelement-4" class="high middle"><a href="/">Partners</a></div>
+      <div id="menuelement-5"><a href="/">Video</a></div>
+      <div id="menuelement-6"><a href="/">Contact</a></div>
+      <div id="menuelement-7" class="high last"><a href="/">Twitter</a></div>
     </div>
 
     <div id="main">
@@ -94,13 +94,13 @@ object default {
 
     <div id="footer">
       <a href="/">Home</a>
-      <a href="#">Tickets</a>
-      <a href="#">Program</a>
-      <a href="#">About</a>
-      <a href="#">Info</a>
-      <a href="#">Video</a>
-      <a href="#">Contact</a>
-      <a href="#">Twitter</a>
+      <a href="/">Tickets</a>
+      <a href="/">Program</a>
+      <a href="/about.html">About</a>
+      <a href="/">Info</a>
+      <a href="/">Video</a>
+      <a href="/">Contact</a>
+      <a href="/">Twitter</a>
     </div>
 
     </div></div></div>
@@ -127,7 +127,7 @@ object default {
         <ol class="images">
           <li class="prev"><img src="/images/banner/news/1.jpg" alt=""/></li>
           <li class="curr"><img src="/images/banner/news/2.jpg" alt=""/></li>
-          <li class="next"><img src="/images/banner/news/3.jpg" alt=""/></li>
+          <li class="next"><img src="/images/banner/news/3.jpg" alt=""/></li> 
         </ol>
       </div>
       <div id="prev" class="btn-nav"><img src="/images/banner/nav-left.png" alt=""/></div>
@@ -138,7 +138,7 @@ object default {
   def sidebar(tweets: List[JzTweet]) =
     <h2>
       <a href="http://twitter.com/javazone">#javazone</a>
-    </h2>
+    </h2> 
     <div id="twitter" class="twitted">
       {tweets.map(Snippets.tweetToDiv)}
     </div>
