@@ -65,7 +65,7 @@ object JavaZonePortal extends Build {
         "net.databinder" %% "unfiltered-filter" % unfilteredVersion,
         "net.databinder" %% "unfiltered-jetty" % unfilteredVersion % "test",
 
-        "no.javabin" %% "atom2twitterpublisher" % "1.1",
+        "no.java" %% "atom2twitterpublisher" % "1.2-SNAPSHOT",
         "no.arktekk.atom-client" %% "atom-client-core" % "1.1-SNAPSHOT",
 
         "org.constretto" %% "constretto-scala" % "1.0",
