@@ -285,12 +285,15 @@ h2,h3 {
     background:rgba(0,0,0,0.2);
 }
 
-#partners {
+#partners p {
     margin-bottom:20px; 
+    background:none;
+    border:none;
+    padding:0;
 }
 
 #partners img {
-    width:171px;
+    width:167px;
     opacity:0.9;
     box-shadow:none;
     margin:0 1px 1px 0;

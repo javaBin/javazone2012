@@ -12,7 +12,7 @@ object page {
       {siblings.map(siblings_(_)).getOrElse(NodeSeq.Empty)}
       {children.filter(!_.isEmpty).map(children_(_)).getOrElse(NodeSeq.Empty)}
       <h2>{page.title}</h2>
-      <div>{page.content}</div>
+      {page.content}
     </div>
   )
 

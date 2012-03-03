@@ -1,3 +1,4 @@
+/*
 var partners = [
     ["systek_2012.jpg", "http://www.systek.no/"],
     ["arktekk_2012.jpg", "http://www.arktekk.no/"],
@@ -29,6 +30,7 @@ var partners = [
     ["miles_2012.jpg", "http://www.miles.no/"],
     ["finn_2012.jpg", "http://www.finn.no"]
 ];
+*/
 
 var shuffle = function(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i, 10), x = o[--i], o[i] = o[j], o[j] = x);
@@ -48,15 +50,10 @@ var isMobile = function() {
 };
 
 var randomizepartners = function() {
-    partners = shuffle(partners);
+    var partners = shuffle($("#partners img"));
     $("#partners").html("");
     for(var i = 0; i < partners.length; i++) {
-        $("#partners")
-            .prepend($("<a href='#' />")
-            .attr("href", partners[i][1])
-            .attr("target", "_blank")
-            .html($("<img />").attr("src", 
-                "img/partners/" + partners[i][0])));
+        $("#partners").prepend(partners[i]);
     }
 };
 
