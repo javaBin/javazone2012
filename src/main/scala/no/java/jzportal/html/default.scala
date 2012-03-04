@@ -8,17 +8,16 @@ class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val abou
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
       <title>JavaZone 2012</title>
-      <meta name = "viewport" content = "initial-scale = 0.6, user-scalable = no" /> 
-      <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico" />
-      <link rel="stylesheet" href="/css/style.css" />
-      <link rel="stylesheet" href="/css/jz.css" />
-      <link rel="stylesheet" href="/css/min.css" />
-      <link rel="stylesheet" href="/css/med.css" />
-      <link rel="stylesheet" href="/css/max.css" />
+      <meta name = "viewport" content = "initial-scale = 0.6, user-scalable = no"/>
+      <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
+      <link rel="stylesheet" href="/css/style.css"/>
+      <link rel="stylesheet" href="/css/jz.css"/>
+      <link rel="stylesheet" href="/css/min.css"/>
+      <link rel="stylesheet" href="/css/med.css"/>
+      <link rel="stylesheet" href="/css/max.css"/>
       <script type="text/javascript" src="http://use.typekit.com/vtw8zbt.js"></script>
       <script type="text/javascript">{" try{Typekit.load();}catch(e){} "}</script>
       <link href="http://jz11.java.no/atom.xml" title="JavaZone nyheter" type="application/atom+xml" rel="alternate"/>
-      <base/>
       <!--[if IE]><script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     </head>
     <body lang="en">

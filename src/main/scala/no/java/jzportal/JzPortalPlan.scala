@@ -49,7 +49,7 @@ class JzPortalPlan extends Plan {
   }
 
   object CacheOneDay extends CacheControl(86400L, false)
-  object CacheOneDayMustRevalidate extends CacheControl(86400L, false)
+  object CacheOneDayMustRevalidate extends CacheControl(86400L, true)
   object NoCache extends CacheControl(0L, true)
 
   case class LastModified private(timestamp: Long) extends Responder[Any] {
@@ -114,13 +114,23 @@ class JzPortalPlan extends Plan {
       val start = params.get("start").flatMap(_.headOption)
       Ok ~> CacheOneDayMustRevalidate ~> Html5(renderNewsList(start))
 
-    case Path(Seg("news" :: slug :: Nil)) & Path(p) if slug.endsWith(".html") =>
+    case req@Path(Seg("news" :: slug :: Nil)) & Path(p) if slug.endsWith(".html") =>
       val s = slug.replaceFirst("\\.html$", "")
-      renderNewsItem(s) match {
-        case Some((entry, html)) =>
-          Ok ~> CacheOneDayMustRevalidate ~> new LastModified(entry) ~> Html5(html)
+      cmsClient.fetchPostBySlug(CmsSlug.fromString(s)) match {
         case None =>
           NotFound ~> NoCache ~> Html5(notFound(default(), p))
+        case Some(entry) =>
+          entry.updatedOrPublished match {
+            case None =>
+              Ok ~> CacheOneDayMustRevalidate ~> Html5(news(default(), entry))
+            case Some(entryDate) =>
+              req match {
+                case IfModifiedSince(clientDate) if clientDate.getTime >= entryDate.withMillisOfSecond(0).getMillis =>
+                  NotModified ~> CacheOneDayMustRevalidate ~> new LastModified(entry)
+                case _ =>
+                  Ok ~> CacheOneDayMustRevalidate ~> new LastModified(entry) ~> Html5(news(default(), entry))
+              }
+          }
       }
   }
 
@@ -148,10 +158,9 @@ class JzPortalPlan extends Plan {
     news(default(), tweets, response)
   }
 
-  def renderNewsItem(slug: String): Option[(CmsEntry, NodeSeq)] = for {
-    post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
-    val topPages = cmsClient.fetchTopPages()
-  } yield (post, news(default(), post))
+//  def renderNewsItem(slug: String): Option[(CmsEntry, NodeSeq)] = for {
+//    post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
+//  } yield (post, news(default(), post))
 
   def renderPage(p: CmsEntry) = {
     val siblings = for {
