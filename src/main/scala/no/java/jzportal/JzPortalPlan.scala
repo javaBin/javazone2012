@@ -3,22 +3,22 @@ package no.java.jzportal
 import java.io._
 import java.net._
 import javax.servlet.FilterConfig
-import org.joda.time.format._
-import no.arktekk.cms.{Logger => CmsLogger, _}
 import no.arktekk.cms.CmsUtil._
 import no.arktekk.cms.atompub._
+import no.arktekk.cms.{Logger => CmsLogger, _}
 import no.java.jzportal.twitter._
+import org.apache.commons.io.IOUtils
+import org.constretto.Converter._
+import org.constretto._
 import org.joda.time.Minutes._
+import org.joda.time._
+import org.joda.time.format._
+import org.slf4j._
 import scala.util.control._
 import scala.xml._
 import unfiltered.filter._
-import unfiltered.response._
-
-import org.slf4j._
-import org.constretto._
-import org.constretto.Converter._
-import org.apache.commons.io.IOUtils
 import unfiltered.request._
+import unfiltered.response._
 
 // TODO: Wrap an unfiltered kit around this plan that prevent all methods except GET (and possibly HEAD)
 class JzPortalPlan extends Plan {
@@ -33,14 +33,35 @@ class JzPortalPlan extends Plan {
 
   import html._
 
-  case class HeadersFromEntry(entry: CmsEntry) extends Responder[Any] {
-//    def toString(dateTime: DateTime) = {
-//    }
+  /**
+   * Conforms to http://tools.ietf.org/html/draft-ietf-httpbis-p2-semantics-18#section-8.
+   * Example: Sun, 06 Nov 1994 08:49:37 GMT
+   */
+  val httpDateFormat = DateTimeFormat.forPattern("E, dd MMM yyyy HH:mm:ss 'GMT'").withZone(DateTimeZone.UTC)
+
+  case class CacheControl(maxAge: Long, mustRevalidate: Boolean) extends Responder[Any] {
+    def respond(res: HttpResponse[Any]) {
+      res.header("Cache-Control",
+        (if(maxAge > 0) "max-age=" + maxAge + ", " else "no-cache, ") +
+        (if(mustRevalidate) "must-revalidate" else "")
+      )
+    }
+  }
+
+  object CacheOneDay extends CacheControl(86400L, false)
+  object CacheOneDayMustRevalidate extends CacheControl(86400L, false)
+  object NoCache extends CacheControl(0L, true)
+
+  case class LastModified private(timestamp: Long) extends Responder[Any] {
+
+    def this(entry: CmsEntry) = this(entry.updatedOrPublished.map(_.getMillis).getOrElse(0L))
+
+    def this(connection: URLConnection) = this(connection.getLastModified)
 
     def respond(res: HttpResponse[Any]) {
-      res.header("Cache-Control", "public, must-revalidate")
-
-//      entry.updatedOrPublished.foreach(dateTime => res.header("Last-Modified", toString(dateTime)))
+      if(timestamp > 0) {
+        res.header("Last-Modified", httpDateFormat.print(timestamp))
+      }
     }
   }
 
@@ -58,7 +79,7 @@ class JzPortalPlan extends Plan {
         cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse("No children")
       }
       val lines = cmsClient.fetchTopPages().map(dumpEntry(0))
-      Ok ~> PlainTextContent ~> unfiltered.response.ResponseString(lines.mkString("\n") + "\n")
+      Ok ~> NoCache ~> PlainTextContent ~> unfiltered.response.ResponseString(lines.mkString("\n") + "\n")
 
     case Path(Seg("flush" :: Nil)) =>
       cmsClient.flushCaches()
@@ -68,35 +89,44 @@ class JzPortalPlan extends Plan {
       Redirect("http://java.no/favicon.ico")
 
     case req & Path(p) =>
-      Option(classOf[JzPortalPlan].getClassLoader.getResourceAsStream("webapp" + p)) match {
-        case Some(inputStream) =>
+      Option(classOf[JzPortalPlan].getClassLoader.getResource("webapp" + p)) match {
+        case Some(url) =>
           logger.info("Found resource: /webapp" + p)
-          val bytes = IOUtils.toByteArray(inputStream)
-          Ok ~> PathBasedContentTypeResponder(p) ~> ResponseBytes(bytes)
+          val connection = url.openConnection()
+          val input = connection.getInputStream
+          Ok ~> CacheOneDay ~> new LastModified(connection) ~> PathBasedContentTypeResponder(p) ~> new ResponseStreamer {
+            def stream(os: OutputStream) {
+              try {
+                IOUtils.copy(input, os)
+              } finally {
+                IOUtils.closeQuietly(input)
+              }
+            }
+          }
         case None =>
           logger.info("Not found: /webapp" + p)
-          NotFound ~> Html5(notFound(default(), p))
+          NotFound ~> NoCache ~> Html5(notFound(default(), p))
       }
   }
 
   def newsIntent = Intent {
     case Path(Seg("news.html" :: Nil)) & Params(params) =>
       val start = params.get("start").flatMap(_.headOption)
-      Ok ~> Html5(renderNewsList(start))
+      Ok ~> CacheOneDayMustRevalidate ~> Html5(renderNewsList(start))
 
-    case Path(Seg("news" :: slug :: Nil)) & Path(p) =>
+    case Path(Seg("news" :: slug :: Nil)) & Path(p) if slug.endsWith(".html") =>
       val s = slug.replaceFirst("\\.html$", "")
       renderNewsItem(s) match {
         case Some((entry, html)) =>
-          Ok ~> HeadersFromEntry(entry) ~> Html5(html)
+          Ok ~> CacheOneDayMustRevalidate ~> new LastModified(entry) ~> Html5(html)
         case None =>
-          NotFound ~> Html5(notFound(default(), p))
+          NotFound ~> NoCache ~> Html5(notFound(default(), p))
       }
   }
 
   def pagesIntent = Intent {
-    case Page(page) & Path(path) =>
-      Ok ~> Html5(renderPage(page))
+    case Page(page) & Path(path) if path.endsWith(".html") =>
+      Ok ~> CacheOneDayMustRevalidate ~> new LastModified(page) ~> Html5(renderPage(page))
   }
 
   def default(): default = {
@@ -137,7 +167,7 @@ class JzPortalPlan extends Plan {
     def unapply[T](req: HttpRequest[T]): Option[CmsEntry] = {
       val list = req.uri.split('?')(0).split("/").toList
       list match {
-        case "" :: slug :: Nil =>
+        case "" :: slug :: Nil if slug.endsWith(".html") =>
           val s = slug.replaceFirst("\\.html$", "")
           cmsClient.fetchPageBySlug(CmsSlug.fromString(s))
         case _ =>

@@ -89,7 +89,7 @@ class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val abou
   def menu(topPages: List[CmsEntry]): NodeSeq = {
     implicit def f(o: Option[CmsEntry]): NodeSeq = o match {
       case None => <span>&nbsp;</span>
-      case Some(entry) => <a href={entry.slug.toString()}>{entry.title}</a>
+      case Some(entry) => <a href={entry.slug.toString() + ".html"}>{entry.title}</a>
     }
 
     <div id="menu">
