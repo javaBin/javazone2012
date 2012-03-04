@@ -3,6 +3,7 @@ package no.java.jzportal
 import java.io._
 import java.net._
 import javax.servlet.FilterConfig
+import javax.servlet.http._
 import no.arktekk.cms.CmsUtil._
 import no.arktekk.cms.atompub._
 import no.arktekk.cms.{Logger => CmsLogger, _}
@@ -66,7 +67,24 @@ class JzPortalPlan extends Plan {
   }
 
   def intent = {
-    newsIntent.orElse(pagesIntent.orElse(fallbackIntent))
+    filterIntent(newsIntent.orElse(pagesIntent.orElse(fallbackIntent)))
+  }
+
+  def filterIntent(intent: Plan.Intent) = new Plan.Intent {
+    val f = Intent {
+      case x@GET(_) =>
+        intent.apply(x)
+      case x@HEAD(_) =>
+        intent.apply(x)
+      case _ => MethodNotAllowed ~>
+        Allow("GET", "HEAD") ~>
+        PlainTextContent ~>
+        ResponseString("Only GET and HEAD are allowed.")
+    }
+
+    def isDefinedAt(x: HttpRequest[HttpServletRequest]) = f.isDefinedAt(x) && intent.isDefinedAt(x)
+
+    def apply(x: HttpRequest[HttpServletRequest]) = f(x)
   }
 
   def fallbackIntent = Intent {
@@ -109,6 +127,17 @@ class JzPortalPlan extends Plan {
       }
   }
 
+  def conditionMatches(entry: CmsEntry, req: HttpRequest[Any]): Boolean = entry.updatedOrPublished match {
+    case Some(dateTime) => req match {
+      case IfModifiedSince(clientDate) =>
+        (clientDate.getTime >= dateTime.withMillisOfSecond(0).getMillis)
+      case _ =>
+        false
+    }
+    case _ =>
+      false
+  }
+
   def newsIntent = Intent {
     case Path(Seg("news.html" :: Nil)) & Params(params) =>
       val start = params.get("start").flatMap(_.headOption)
@@ -120,17 +149,18 @@ class JzPortalPlan extends Plan {
         case None =>
           NotFound ~> NoCache ~> Html5(notFound(default(), p))
         case Some(entry) =>
-          entry.updatedOrPublished match {
-            case None =>
-              Ok ~> CacheOneDayMustRevalidate ~> Html5(news(default(), entry))
-            case Some(entryDate) =>
-              req match {
-                case IfModifiedSince(clientDate) if clientDate.getTime >= entryDate.withMillisOfSecond(0).getMillis =>
-                  NotModified ~> CacheOneDayMustRevalidate ~> new LastModified(entry)
-                case _ =>
-                  Ok ~> CacheOneDayMustRevalidate ~> new LastModified(entry) ~> Html5(news(default(), entry))
-              }
-          }
+          CacheOneDayMustRevalidate ~>
+            new LastModified(entry) ~>
+            (if (conditionMatches(entry, req)) {
+              NotModified
+            }
+            else {
+              if (req.method == "HEAD")
+                // Unfiltered sets "Content-Length: 0" :(
+                Ok
+              else
+                Ok ~> Html5(news(default(), entry))
+            })
       }
   }
 
