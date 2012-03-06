@@ -5,7 +5,7 @@ import no.arktekk.cms.CmsEntry
 
 class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val aboutJavaBin: NodeSeq) {
   def apply(content: NodeSeq) =
-    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="no-js">
     <head>
       <title>JavaZone 2012</title>
       <meta name = "viewport" content = "initial-scale = 0.6, user-scalable = no"/>
@@ -81,6 +81,7 @@ class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val abou
     <script src="/js/libs/jquery.color.js"></script>
     <script src="/js/libs/respond.min.js"></script>
     <script src="/js/hyphenator.js"></script>
+    <script src="/js/script.js"></script>
     <script type="text/javascript">{"""
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-3676724-5']);
