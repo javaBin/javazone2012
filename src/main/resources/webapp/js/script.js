@@ -1,42 +1,3 @@
-/*
-var partners = [
-    ["systek_2012.jpg", "http://www.systek.no/"],
-    ["arktekk_2012.jpg", "http://www.arktekk.no/"],
-    ["nets_2012.jpg", "http://www.nets.no/"],
-    ["marcello_2012.jpg", "http://www.marcello.no/"],
-    ["edb_int_2012.jpg", "http://www.edb.com/"],
-    ["visma_2012.jpg", "http://www.visma.no/"],
-    ["bekk_2012.jpg", "http://www.bekk.no/"],
-    ["computas_2012.jpg", "http://www.computas.no/"],
-    ["jpro_2012.jpg", "http://www.jpro.no/"],
-    ["nith_2012.jpg", "http://nith.no/"],
-    ["steria_2012.jpg", "http://www.steria.no/"],
-    ["kantega_2012.jpg", "http://www.kantega.no/"],
-    ["iterate_2012.jpg", "http://www.iterate.no/"],
-    ["conax_2012.jpg", "http://www.conax.no/"],
-    ["microsoft_2012.jpg", "http://www.microsoft.no/"],
-    ["knowit_2012.jpg", "http://www.knowit.no/"],
-    ["mesan_2012.jpg", "http://www.mesan.no/"],
-    ["norgesgruppen_2012.jpg", "http://www.norgesgruppen.no/"],
-    ["bouvet_2012.jpg", "http://www.bouvet.no/"],
-    ["kodemaker_2012.jpg", "http://www.kodemaker.no/"],
-    ["accenture_2012.jpg", "http://www.accenture.no/"],
-    ["capgemini_2012.jpg", "http://www.capgemini.no/"],
-    ["cisco_2012.jpg", "http://www.cisco.com/"],
-    ["ciber_2012.jpg", "http://www.ciber.no/"],
-    ["programutvikling_2012.jpg", "http://www.put.no/"],
-    ["itera_2012.jpg", "http://www.iteraconsulting.no/"],
-    ["wepstep_2012.jpg", "http://www.webstep.no/"],
-    ["miles_2012.jpg", "http://www.miles.no/"],
-    ["finn_2012.jpg", "http://www.finn.no"]
-];
-*/
-
-var shuffle = function(o) {
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i, 10), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-};
-
 var isMobile = function() {
     return (
         navigator.userAgent.match(/Windows Phone/i) ||
@@ -49,12 +10,19 @@ var isMobile = function() {
     );
 };
 
-var randomizepartners = function() {
-    var partners = shuffle($("#partners a"));
-    $("#partners").html("");
-    for(var i = 0; i < partners.length; i++) {
-        $("#partners").append(partners[i]);
+var randomizepartners = function(e) {
+    if(e.size() === 0) return;
+    
+    var replace = $('<div>');
+    var size = e.size();
+    while (size >= 1) {
+       var rand = Math.floor(Math.random() * size);
+       var temp = e.get(rand);
+       replace.append(temp);
+       e = e.not(temp);
+       size--;
     }
+    $('#partners').html(replace.html());
 };
 
 var daysUntilJavazoneInBinary = function() {
@@ -69,7 +37,6 @@ var daysUntilJavazoneInBinary = function() {
     }
     
     daysLeftBinary = parseInt(daysLeft, 10).toString(2);
-    //console.log("Antall dager til Javazone: " + daysLeft + ". Binær: " + daysLeftBinary);
     return daysLeftBinary;
 };
 
@@ -79,11 +46,8 @@ var changeHeaderColors = function() {
     var menuElementToModify = 7;
     for (var i = daysLeftBinary.length - 1; i >= 0; i--) {
         if(daysLeftBinary[i] == 1) {
-            //console.log("Gjør menyelement " + menuElementToModify + " blått.");
             $("#menuelement-" + menuElementToModify).css({backgroundColor: "#00aced"},{queue:false,duration:100});
-        } else {
-            //console.log("Gjør menyelement " + menuElementToModify + " grønt.");
-        }
+        } 
         menuElementToModify--;
     }
 };
@@ -133,7 +97,7 @@ $(function() {
     }
 
     changeHeaderColors();
-    randomizepartners();
+    randomizepartners($("#partners a"));
     resizeIframe();
     $(window).resize(resizeIframe);
 });
