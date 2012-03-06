@@ -68,15 +68,17 @@ class JzPortalPlan extends Plan {
   }
 
   def intent = {
-    filterIntent(newsIntent.orElse(pagesIntent.orElse(fallbackIntent)))
+    readOnlyIntent(newsIntent.orElse(pagesIntent.orElse(fallbackIntent)))
   }
 
-  def filterIntent(intent: Plan.Intent) = new Plan.Intent {
+  def readOnlyIntent(intent: Plan.Intent) = new Plan.Intent {
     val f = Intent {
       case x@GET(_) =>
         intent.apply(x)
       case x@HEAD(_) =>
         intent.apply(x)
+      case OPTIONS(_) =>
+        Ok ~> Allow("GET", "HEAD")
       case _ => MethodNotAllowed ~>
         Allow("GET", "HEAD") ~>
         PlainTextContent ~>
@@ -85,7 +87,7 @@ class JzPortalPlan extends Plan {
 
     def isDefinedAt(x: HttpRequest[HttpServletRequest]) = f.isDefinedAt(x) && intent.isDefinedAt(x)
 
-    def apply(x: HttpRequest[HttpServletRequest]) = f(x)
+    def apply(x: HttpRequest[HttpServletRequest]) = Allow("GET", "HEAD") ~> f(x)
   }
 
   def fallbackIntent = Intent {
@@ -94,8 +96,11 @@ class JzPortalPlan extends Plan {
 
     case Path(Seg("dump" :: Nil)) =>
       def dumpEntry(indent: Int)(entry: CmsEntry): String = {
-        ("".padTo(indent, ' ') + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories) + "\n" +
-        cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse("No children")
+        val i = "".padTo(indent, ' ')
+
+        "Page Tree:" +
+        (i + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories) + "\n" +
+        cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse(i + "No children")
       }
       val lines = cmsClient.fetchTopPages().map(dumpEntry(0))
       Ok ~> NoCache ~> PlainTextContent ~> unfiltered.response.ResponseString(lines.mkString("\n") + "\n")

@@ -37,5 +37,4 @@ object news {
     <div id="twitter" class="twitted">
       {tweets.map(Snippets.tweetToDiv)}
     </div>
-
 }
