@@ -72,7 +72,7 @@ class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val abou
       <a href="http://www.youtube.com/user/JavaZoneNo"><img src="/img/social/youtube.png" /></a>
       <a href="http://vimeo.com/javazone/videos"><img src="/img/social/vimeo.png" /></a>
       </p>
-      <p class="text">Designed by <a href="#">Accenture Creative Services</a></p>
+      <p class="text">Design: <a href="http://accenture.com">Accenture Creative Services</a></p>
     </div>
 
     </div></div></div>
