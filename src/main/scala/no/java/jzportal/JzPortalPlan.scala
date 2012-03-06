@@ -31,6 +31,7 @@ class JzPortalPlan extends Plan {
   var twitterClient: TwitterSearch = null
   var aboutJavaZone: URL = null
   var aboutJavaBin: URL = null
+  var twitterSearchHtmlUrl: URL = null
 
   import html._
 
@@ -185,12 +186,8 @@ class JzPortalPlan extends Plan {
     val response = cmsClient.fetchEntriesForCategory("news", offset, pageSize)
     val tweets = twitterClient.currentResults
 
-    news(default(), tweets, response)
+    news(default(), twitterSearchHtmlUrl, tweets, response)
   }
-
-//  def renderNewsItem(slug: String): Option[(CmsEntry, NodeSeq)] = for {
-//    post <- cmsClient.fetchPostBySlug(CmsSlug.fromString(slug))
-//  } yield (post, news(default(), post))
 
   def renderPage(p: CmsEntry) = {
     val siblings = for {
@@ -246,19 +243,19 @@ class JzPortalPlan extends Plan {
 
     this.aboutJavaZone = constretto("cms.snippets.about_javazone")(urlConverter)
     this.aboutJavaBin = constretto("cms.snippets.about_javabin")(urlConverter)
+    val twitterSearchAtomUrl = constretto("twitter.search.atom")(urlConverter)
+    this.twitterSearchHtmlUrl = constretto("twitter.search.html")(urlConverter)
     this.atomPubClient = atomPubClient
     this.cmsClient = cmsClient
 
     // Twitter search integration
     this.twitterClient = {
-      val x: String = constretto("twitter.search")(stringConverter)
-      println("twitter search = " + x)
-      val searchUri = new URI(x)
+      println("twitter search = " + twitterSearchAtomUrl)
       val logger = LoggerFactory.getLogger("twitter.client")
-      val twitterClient = new TwitterClientActor(logger, minutes(1), searchUri)
+      val twitterClient = new TwitterClientActor(logger, minutes(1), twitterSearchAtomUrl.toURI)
       twitterClient ! TwitterClient.Update
       twitterClient.start()
-      logger.info("Starting twitter search: " + searchUri)
+      logger.info("Starting twitter search: " + twitterSearchAtomUrl)
       twitterClient
     }
   }

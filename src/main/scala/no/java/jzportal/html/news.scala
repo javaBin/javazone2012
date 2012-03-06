@@ -1,12 +1,13 @@
 package no.java.jzportal.html
 
 import xml.NodeSeq
-import no.java.jzportal.html.Snippets._
+import java.net.URL
 import no.arktekk.cms.{OpenSearchResponse, CmsEntry}
+import no.java.jzportal.html.Snippets._
 import no.java.jzportal.twitter.JzTweet
 
 object news {
-  def apply(default: default, tweets: List[JzTweet], response: OpenSearchResponse) = default(
+  def apply(default: default, twitterSearchHtmlUrl: URL, tweets: List[JzTweet], response: OpenSearchResponse) = default(
     <div class="body hyphenate">
       <div class="news">
         {
@@ -19,7 +20,7 @@ object news {
       </div>
     </div>
     <div class="side tweets">
-      {sidebar(tweets)}
+      {sidebar(twitterSearchHtmlUrl, tweets)}
     </div>    
   )
 
@@ -29,9 +30,9 @@ object news {
     </div>
   )
 
-  def sidebar(tweets: List[JzTweet]) =
+  def sidebar(twitterSearchHtmlUrl: URL, tweets: List[JzTweet]) =
     <h2>
-      <a href="http://twitter.com/javazone">#javazone</a>
+      <a href={twitterSearchHtmlUrl.toString}>#javazone</a>
     </h2> 
     <div id="twitter" class="twitted">
       {tweets.map(Snippets.tweetToDiv)}
