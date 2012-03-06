@@ -1,4 +1,8 @@
-var isMobile = function() {
+/* ----------------------------------------------------------------- */
+/* JavaZone 2012                                                     */
+/* ----------------------------------------------------------------- */
+
+var isMobile = (function() {
     return (
         navigator.userAgent.match(/Windows Phone/i) ||
         navigator.userAgent.match(/Android/i) ||
@@ -8,10 +12,26 @@ var isMobile = function() {
         navigator.userAgent.match(/iPod/i) ||
         navigator.userAgent.match(/BlackBerry/)
     );
-};
+})();
+
+var browser = (function() {
+    var userAgent = navigator.userAgent.toLowerCase();
+    return {
+        version: (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [0,'0'])[1],
+        safari: /webkit/.test( userAgent ),
+        opera: /opera/.test( userAgent ),
+        msie: /msie/.test( userAgent ) && !/opera/.test( userAgent ),
+        mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
+    };
+})();
+
+var oldie = (browser.msie && (browser.version === "7.0" || browser.version === "8.0"));
+
+/* ----------------------------------------------------------------- */
 
 var randomizepartners = function(e) {
     if(e.size() === 0) return;
+    if(oldie) return;
 
     var replace = $('<div>');
     var size = e.size();
@@ -58,6 +78,8 @@ var resizeIframe = function() {
     });
 };
 
+/* ----------------------------------------------------------------- */
+
 $(function() {
     $("html").removeClass("no-js");
 
@@ -65,7 +87,7 @@ $(function() {
     Hyphenator.run();
 
     // Animate menu.
-    if(!isMobile()) {
+    if(!isMobile) {
         var original = "-10px";
         $("#menu div").hover(function() {
             original = $(this).css("margin-top");
@@ -76,7 +98,7 @@ $(function() {
     }
     
     // Parallax headers.
-    if(!isMobile()) {
+    if(!isMobile) {
         (function () {
             var next, part;
             $(window).scroll(function(){
@@ -90,7 +112,7 @@ $(function() {
     }
 
     // Fade in content.
-    if(isMobile()) {
+    if(isMobile) {
         $("#main, #side, #sidesplash").show();
     } else {
         $("#main, #side, #sidesplash").fadeIn("slow");
