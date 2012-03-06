@@ -12,7 +12,7 @@ var isMobile = function() {
 
 var randomizepartners = function(e) {
     if(e.size() === 0) return;
-    
+
     var replace = $('<div>');
     var size = e.size();
     while (size >= 1) {
@@ -69,9 +69,9 @@ $(function() {
         var original = "-10px";
         $("#menu div").hover(function() {
             original = $(this).css("margin-top");
-            $(this).animate({marginTop:"-20px", opacity:1},{queue:false,duration:100});
+            $(this).animate({opacity:1},{queue:false,duration:100});
         }, function() {        
-            $(this).animate({marginTop:original, opacity:0.9},{queue:false,duration:100});
+            $(this).animate({opacity:0.9},{queue:false,duration:100});
         });    
     }
     

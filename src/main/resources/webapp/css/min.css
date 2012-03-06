@@ -12,7 +12,7 @@ body {
 #minsplash {
     display:block;
 	background:url("../img/splashclean.jpg") top center no-repeat;
-	padding:660px 50px 50px 50px;
+	padding:600px 50px 50px 50px;
     animation: swingy 2s linear infinite alternate;
     -moz-animation: swingy 2s linear infinite alternate;
     -webkit-animation: swingy 2s linear infinite alternate; 
@@ -47,7 +47,7 @@ body {
 
 #menu {
 	position:absolute;
-	top:400px;
+	top:380px;
 	width:520px;
 	left:50%;
 	margin-left:-251px;
@@ -60,22 +60,23 @@ body {
 #menu div {
 	margin-bottom:30px;
 	width:115px;
-	height:105px;
+	height:90px;
 }
 
 #menu div a {
-	padding-top:60px;
+	padding-top:50px;
 	font-size:18px;
 	font-weight:bold;
 }
 
 #main #submenu {
-	top:640px;
-	font-size:90%;
+	text-align:center;
+	top:590px;
+	font-size:70%;
 }
 
 #main #submenu a {
-	padding:13px;
+	padding:10px;
 }
 
 #main {
