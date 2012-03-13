@@ -111,13 +111,6 @@ $(function() {
         }());
     }
 
-    // Fade in content.
-    if(isMobile) {
-        $("#main, #side, #sidesplash").show();
-    } else {
-        $("#main, #side, #sidesplash").fadeIn("slow");
-    }
-
     changeHeaderColors();
     randomizepartners($("#partners a"));
     resizeIframe();

@@ -25,8 +25,10 @@ object news {
   )
 
   def apply(default: default, newsEntry: CmsEntry) = default(
-    <div class="news">
-      {entryToHtml(newsEntry)}
+    <div class="body bigbody hyphenate">
+      <div class="news">
+        {entryToHtml(newsEntry)}
+      </div>
     </div>
   )
 
