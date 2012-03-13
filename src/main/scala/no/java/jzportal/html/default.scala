@@ -69,7 +69,7 @@ class default(val contextPath: String, val topPages: List[CmsEntry], val aboutJa
       <a href="http://www.youtube.com/user/JavaZoneNo"><img src={contextPath + "/img/social/youtube.png"}/></a>
       <a href="http://vimeo.com/javazone/videos"><img src={contextPath + "/img/social/vimeo.png"}/></a>
       </p>
-      <p class="text"><a href="http://java.no">Brought to you by the people of JavaBin</a>. Design by <a href="http://accenture.com">Accenture Creative Services</a></p>
+      <p class="text"><a href="http://java.no">Brought to you by the people of javaBin</a>. Design by <a href="http://accenture.com">Accenture Creative Services</a></p>
     </div>
 
     </div></div></div>
