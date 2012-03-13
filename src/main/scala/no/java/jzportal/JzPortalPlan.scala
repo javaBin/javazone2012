@@ -176,20 +176,11 @@ class JzPortalPlan extends Plan {
 
   def pagesIntent = Intent {
     case ContextPath(contextPath, Slugs(slugs)) =>
-      println("slugs=" + slugs.list)
       (for {
         p <- cmsClient.fetchPageBySlug(slugs)
         children = cmsClient.fetchChildrenOf(slugs)
         siblings = cmsClient.fetchSiblingsOf(slugs)
       } yield {
-        println("children:"); children.foreach { x => x.foreach { x => println(x.title) }}
-        println("siblings:"); siblings.foreach { case (prev, page, next) => {
-          println("prev")
-          prev.foreach{x => println(x.title)}
-          println("next")
-          next.foreach{x => println(x.title)}
-        }}
-
         val html = if(slugs.tail.isEmpty) {
           page(default(contextPath), slugs, p, children, None)
         } else {
