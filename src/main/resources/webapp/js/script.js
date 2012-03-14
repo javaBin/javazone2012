@@ -98,7 +98,7 @@ $(function() {
     }
     
     // Parallax headers.
-    if(!isMobile) {
+    if(!isMobile && !browser.mozilla) {
         (function () {
             var next, part;
             $(window).scroll(function(){
