@@ -23,7 +23,6 @@ class BannerActor(val cmsClient: CmsClient, val logger: Logger, val timeout: Min
   }
 
   def update() {
-    cmsClient.fetchChildrenOf(CmsSlug.fromString("banners"))
   }
 }
 

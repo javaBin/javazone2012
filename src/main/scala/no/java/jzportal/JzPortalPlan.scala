@@ -17,7 +17,10 @@ import org.joda.time.format._
 import org.slf4j._
 import scala.util.control._
 import scala.xml._
+import scalaz.{Logger => _, _}
+import scalaz.Scalaz._
 import unfiltered.filter._
+import unfiltered.filter.request._
 import unfiltered.request._
 import unfiltered.response._
 
@@ -51,7 +54,7 @@ class JzPortalPlan extends Plan {
   }
 
   object CacheOneDay extends CacheControl(86400L, false)
-  object CacheOneDayMustRevalidate extends CacheControl(86400L, true)
+  object MustRevalidate extends CacheControl(0L, true)
   object NoCache extends CacheControl(0L, true)
 
   case class LastModified private(timestamp: Long) extends Responder[Any] {
@@ -68,7 +71,7 @@ class JzPortalPlan extends Plan {
   }
 
   def intent = {
-    readOnlyIntent(newsIntent.orElse(pagesIntent.orElse(fallbackIntent)))
+    readOnlyIntent(newsIntent.orElse(pagesIntent.onPass(fallbackIntent)))
   }
 
   def readOnlyIntent(intent: Plan.Intent) = new Plan.Intent {
@@ -78,8 +81,10 @@ class JzPortalPlan extends Plan {
       case x@HEAD(_) =>
         intent.apply(x)
       case OPTIONS(_) =>
-        Ok ~> Allow("GET", "HEAD")
-      case _ => MethodNotAllowed ~>
+        Ok ~>
+          Allow("GET", "HEAD")
+      case _ =>
+        MethodNotAllowed ~>
         Allow("GET", "HEAD") ~>
         PlainTextContent ~>
         ResponseString("Only GET and HEAD are allowed.")
@@ -91,28 +96,28 @@ class JzPortalPlan extends Plan {
   }
 
   def fallbackIntent = Intent {
-    case Path(Seg(Nil)) =>
-      Redirect("/news.html")
+    case ContextPath(cp, "/") =>
+      Redirect(cp + "/news")
 
-    case Path(Seg("dump" :: Nil)) =>
-      def dumpEntry(indent: Int)(entry: CmsEntry): String = {
-        val i = "".padTo(indent, ' ')
+//    case ContextPath(cp, "/dump") =>
+//      def dumpEntry(indent: Int, parentSlugs: NonEmptyList[CmsSlug])(entry: CmsEntry): String = {
+//        val i = "".padTo(indent, ' ')
+//        val slugs: NonEmptyList[CmsSlug] = entry.slug :: parentSlugs
+//
+//        (i + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories.mkString(",")) + "\n" +
+//        cmsClient.fetchChildrenOf(slugs).map(x => x.map(dumpEntry(indent + 1, slugs))).map(_.mkString("\n")).getOrElse(i + "No children")
+//      }
+//      val lines = cmsClient.fetchTopPages().map(dumpEntry(0, List.empty))
+//      Ok ~> NoCache ~> PlainTextContent ~> unfiltered.response.ResponseString("Page Tree:\n" + lines.mkString("\n") + "\n")
 
-        "Page Tree:" +
-        (i + "Title=" + entry.title + ", slug=" + entry.slug + ", id=" + entry.id + ", categories=" + entry.categories) + "\n" +
-        cmsClient.fetchChildrenOf(entry.slug).map(_.map(dumpEntry(indent + 1))).map(_.mkString("\n")).getOrElse(i + "No children")
-      }
-      val lines = cmsClient.fetchTopPages().map(dumpEntry(0))
-      Ok ~> NoCache ~> PlainTextContent ~> unfiltered.response.ResponseString(lines.mkString("\n") + "\n")
-
-    case Path(Seg("flush" :: Nil)) =>
+    case ContextPath(cp, "/flush") =>
       cmsClient.flushCaches()
-      Redirect("/news.html")
+      Redirect(cp + "/news")
 
-    case Path(Seg("favicon.ico" :: Nil)) =>
+    case ContextPath(cp, "/favicon.ico") =>
       Redirect("http://java.no/favicon.ico")
 
-    case req & Path(p) =>
+    case req@ContextPath(cp, p) =>
       Option(classOf[JzPortalPlan].getClassLoader.getResource("webapp" + p)) match {
         case Some(url) =>
           logger.info("Found resource: /webapp" + p)
@@ -129,7 +134,7 @@ class JzPortalPlan extends Plan {
           }
         case None =>
           logger.info("Not found: /webapp" + p)
-          NotFound ~> NoCache ~> Html5(notFound(default(), p))
+          NotFound ~> NoCache ~> Html5(notFound(default(cp), p))
       }
   }
 
@@ -145,17 +150,16 @@ class JzPortalPlan extends Plan {
   }
 
   def newsIntent = Intent {
-    case Path(Seg("news.html" :: Nil)) & Params(params) =>
+    case ContextPath(cp, "/news") & Params(params) =>
       val start = params.get("start").flatMap(_.headOption)
-      Ok ~> CacheOneDayMustRevalidate ~> Html5(renderNewsList(start))
+      Ok ~> MustRevalidate ~> Html5(renderNewsList(cp, start))
 
-    case req@Path(Seg("news" :: slug :: Nil)) & Path(p) if slug.endsWith(".html") =>
-      val s = slug.replaceFirst("\\.html$", "")
-      cmsClient.fetchPostBySlug(CmsSlug.fromString(s)) match {
+    case req@ContextPath(cp, p@Seg("news" :: slug :: Nil)) =>
+      cmsClient.fetchPostBySlug(CmsSlug.fromString(slug)) match {
         case None =>
-          NotFound ~> NoCache ~> Html5(notFound(default(), p))
+          NotFound ~> NoCache ~> Html5(notFound(default(cp), p))
         case Some(entry) =>
-          CacheOneDayMustRevalidate ~>
+          MustRevalidate ~>
             new LastModified(entry) ~>
             (if (conditionMatches(entry, req)) {
               NotModified
@@ -165,57 +169,80 @@ class JzPortalPlan extends Plan {
                 // Unfiltered sets "Content-Length: 0" :(
                 Ok
               else
-                Ok ~> Html5(news(default(), entry))
+                Ok ~> Html5(news(default(cp), entry))
             })
       }
   }
 
   def pagesIntent = Intent {
-    case Page(page) & Path(path) if path.endsWith(".html") =>
-      Ok ~> CacheOneDayMustRevalidate ~> new LastModified(page) ~> Html5(renderPage(page))
+    case ContextPath(contextPath, Slugs(slugs)) =>
+      (for {
+        p <- cmsClient.fetchPageBySlug(slugs)
+        children = cmsClient.fetchChildrenOf(slugs)
+        siblings = cmsClient.fetchSiblingsOf(slugs)
+      } yield {
+        val html = if(slugs.tail.isEmpty) {
+          page(default(contextPath), slugs, p, children, None)
+        } else {
+          page(default(contextPath), slugs, p, None, siblings)
+        }
+        Ok ~> MustRevalidate ~> new LastModified(p) ~> Html5(html)
+      }).getOrElse(Pass)
   }
 
-  def default(): default = {
+  def default(contextPath: String): default = {
     def fetchEntry(url: URL): Option[NodeSeq] =
       cmsClient.fetchEntry(url).map(_.content)
 
     val topPages = cmsClient.fetchTopPages()
     val aboutJavaZone = fetchEntry(this.aboutJavaZone).getOrElse(Nil)
     val aboutJavaBin = fetchEntry(this.aboutJavaBin).getOrElse(Nil)
-    new default(topPages, aboutJavaZone, aboutJavaBin)
+    new default(contextPath, topPages, aboutJavaZone, aboutJavaBin)
   }
 
-  def renderNewsList(start: Option[String]) = {
+  def renderNewsList(contextPath: String, start: Option[String]) = {
     val offset = start.flatMap(parseInt).getOrElse(0)
 
     val response = cmsClient.fetchEntriesForCategory("news", offset, pageSize)
     val tweets = twitterClient.currentResults
 
-    news(default(), twitterSearchHtmlUrl, tweets, response)
+    news(default(contextPath), twitterSearchHtmlUrl, tweets, response)
   }
 
-  def renderPage(p: CmsEntry) = {
-    val siblings = for {
-      parent <- cmsClient.fetchParentOfPageBySlug(p.slug)
-      (prev, item, next) <- cmsClient.fetchSiblingsOf(p.slug)
-    } yield (parent, prev, item, next)
-
-    val children = cmsClient.fetchChildrenOf(p.slug)
-    page(default(), p, children, siblings)
-  }
-
-  object Page {
-    def unapply[T](req: HttpRequest[T]): Option[CmsEntry] = {
-      val list = req.uri.split('?')(0).split("/").toList
-      list match {
-        case "" :: slug :: Nil if slug.endsWith(".html") =>
-          val s = slug.replaceFirst("\\.html$", "")
-          cmsClient.fetchPageBySlug(CmsSlug.fromString(s))
+  object Slugs {
+    def unapply[T](req: HttpRequest[T]): Option[NonEmptyList[CmsSlug]] = {
+      req match {
+        case ContextPath(contextPath, path) =>
+          unapply(path)
         case _ =>
           None
       }
     }
+
+    def unapply[T](path: String): Option[NonEmptyList[CmsSlug]] = {
+      path.
+        split("/").
+        filter(_ != "").
+        map(CmsSlug.fromString).toList match {
+        case head :: tail => Some(nel(head, tail))
+        case _ => None
+      }
+    }
   }
+
+//  object Page {
+//    def unapply[T](req: HttpRequest[T]): Option[CmsEntry] = {
+//      val list = req.uri.split('?')(0).split("/").toList
+//      list match {
+//        case "" :: slug :: Nil =>
+//          cmsClient.fetchPageBySlug(CmsSlug.fromString(slug))
+//        case "" :: parent :: child :: Nil =>
+//          cmsClient.fetchPageBySlug(List(CmsSlug.fromString(parent), CmsSlug.fromString(child)))
+//        case _ =>
+//          None
+//      }
+//    }
+//  }
 
   override def init(config: FilterConfig) {
     super.init(config)

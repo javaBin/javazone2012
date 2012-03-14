@@ -2,32 +2,39 @@ package no.java.jzportal.html
 
 import no.arktekk.cms._
 import scala.xml._
+import scalaz.NonEmptyList
 
 object page {
-  import Snippets._
+  def apply(default: default, path: NonEmptyList[CmsSlug], page: CmsEntry, children: Option[Seq[CmsEntry]], siblings: Option[(List[CmsEntry], CmsEntry, List[CmsEntry])]) = {
+    val siblingsCp = default.contextPath + "/" + path.list.dropRight(1).mkString("/") + "/"
+    val childrenCp = default.contextPath + "/" + path.list.mkString("/") + "/"
 
-  def apply(default: default, page: CmsEntry, children: Option[List[CmsEntry]], siblings: Option[(CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])]) = default(
-    <div class="body bigbody hyphenate">
-      {siblings.map(siblings_(_)).getOrElse(NodeSeq.Empty)}
-      {children.filter(!_.isEmpty).map(children_(_)).getOrElse(NodeSeq.Empty)}
-      {page.content}
-    </div>
-  )
+    default(
+      <div class="body bigbody hyphenate">
+        {siblings.map{case (prev, _, next) => siblings_(siblingsCp, page, (prev, next))}.getOrElse(NodeSeq.Empty)}
+        {children.map{children_(childrenCp, path.list, _)}.getOrElse(NodeSeq.Empty)}
+        {page.content}
+      </div>
+    )
+  }
 
-  def siblings_(siblings: (CmsEntry, List[CmsEntry], CmsEntry, List[CmsEntry])) = siblings match { case (parent, prev, item, next ) =>
+  def siblings_(contextPath: String, page: CmsEntry, siblings: (List[CmsEntry], List[CmsEntry])) = siblings match { case (prev, next) =>
     <div id="submenu" class="donthyphenate">
+      <!-- siblings -->
       <ul>
-        {prev.map(entry => pageToLi(entry))}
-        {pageToLi(item)}
-        {next.map(entry => pageToLi(entry))}
+        {prev.map(entry => <li>{<a href={contextPath + entry.slug}>{entry.title}</a>}</li>)}
+        {<li>{<a href={contextPath + page.slug}>{page.title}</a>}</li>}
+        {next.map(entry => <li>{<a href={contextPath + entry.slug}>{entry.title}</a>}</li>)}
       </ul>
     </div>
   }
 
-  def children_(children: List[CmsEntry]) = 
+  def children_(contextPath: String, path: Seq[CmsSlug], children: Seq[CmsEntry]) = {
     <div id="submenu" class="donthyphenate">
+      <!-- children -->
       <ul>
-        {children.map(entry => pageToLi(entry))}
+        {children.map(entry => <li>{<a href={contextPath + entry.slug}>{entry.title}</a>}</li>)}
       </ul>
     </div>
+  }
 }

@@ -15,13 +15,13 @@ object Snippets {
     appendYear(4, 4).
     toFormatter
 
-  def pageToLi(page: CmsEntry) = <li>{pageToA(page)}</li>
-
-  def pageToA(page: CmsEntry) = <a href={"/" + page.slug + ".html"}>{page.title}</a>
+  def splitSiblings(page: CmsSlug, siblings: Seq[CmsEntry]): (Seq[CmsEntry], Seq[CmsEntry]) = {
+    (List.empty, List.empty)
+  }
 
   def readMoreLink(response: OpenSearchResponse, offset: Int): NodeSeq = {
-    val prev = response.prevStart.map(i => <a href={"/news.html?start=" + i}>Prev</a>)
-    val next = response.nextStart.map(i => <a href={"/news.html?start=" + i}>Next</a>)
+    val prev = response.prevStart.map(i => <a href={"/news?start=" + i}>Prev</a>)
+    val next = response.nextStart.map(i => <a href={"/news?start=" + i}>Next</a>)
 
     prev.getOrElse(Text("Prev")) ++ Text(" - ") ++ next.getOrElse(Text("Next"))
   }
@@ -29,7 +29,7 @@ object Snippets {
   def entryToHtml(entry: CmsEntry) =
     <div class="news">
       <h3>
-        <a href={ "/news/" + entry.slug + ".html" }>
+        <a href={"/news/" + entry.slug}>
           {entry.title}
           <span>{entry.updatedOrPublished.map(date => <span class="timestamp">{postDateTimeFormatter.print(date)}</span>).getOrElse(NodeSeq.Empty)}</span>
         </a>
@@ -40,6 +40,5 @@ object Snippets {
   def tweetToDiv(tweet: JzTweet): NodeSeq =
     <div class="tweet">
       <p>{tweet.text} <a href={tweet.handleUrl.toExternalForm}>{tweet.handle}</a></p>
-      <!--<span class="meta">{tweet.timeAgo} &#183; <a class="tweet_link" href={tweet.htmlLink.toString}>View Tweet</a></span>-->
     </div>
 }
