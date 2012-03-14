@@ -309,25 +309,27 @@ hr {
 }
 
 #footer {
-    padding-top:50px;
-    padding-bottom: 30px;
+    padding-top:25px;
+    padding-bottom: 0;
     font-size:14px;
 }
 
 #footer p {
     text-align:center;
     margin:0;
-    padding:20px 0 0 0;
+    padding:20px 0 10px 0;
 }
 
 #footer p.text {
     color:#999;
-    padding:13px 0;
+    padding:0;
 }
 
-#footer a {
+#footer .text a {
     margin:0 0 10px 0;
-    color:#999;
+    color:#FFF;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 #partners {
@@ -375,9 +377,6 @@ hr {
         display:block;
         background:url("../img/splashclean.jpg") top center no-repeat;
         padding:600px 50px 50px 50px;
-        animation: swingy 2s linear infinite alternate;
-        -moz-animation: swingy 2s linear infinite alternate;
-        -webkit-animation: swingy 2s linear infinite alternate; 
     }
 
     #sidesplashtext {
@@ -470,7 +469,7 @@ hr {
     }
 
     #c4 {
-        padding:0 20px 100px 20px;
+        padding:0 20px 50px 20px;
     }
 
     #menu {
@@ -512,9 +511,6 @@ hr {
         margin:0px auto 0 auto;
         background:url("../img/splashclean.jpg") top center no-repeat;
         background-position:fixed;
-        animation: swingy 2s linear infinite alternate;
-        -moz-animation: swingy 2s linear infinite alternate;
-        -webkit-animation: swingy 2s linear infinite alternate; 
         z-index:0;
     }
 
@@ -647,7 +643,7 @@ hr {
     }
 
     #footer p {
-        text-align:left;
+        text-align:center;
     }
 
 }
