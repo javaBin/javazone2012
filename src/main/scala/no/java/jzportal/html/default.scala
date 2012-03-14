@@ -34,10 +34,6 @@ class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val abou
       <img src="/img/longtext.png" id="longtext" />
     </a>
 
-    <a class="max" href="/">
-      <img src="/img/longtext-vertical.png" class="hide" id="longtext-vertical" />
-    </a>
-
     <a class="med" href="/">
       <img src="/img/text.png" id="text-horizontal" />
     </a>
@@ -64,12 +60,16 @@ class default(val topPages: List[CmsEntry], val aboutJavaZone: NodeSeq, val abou
 
     <div id="footer">
       <p>
-      <a href="http://twitter.com/#!/javazone"><img src="/img/social/twitter.png" /></a>
-      <a href="http://www.facebook.com/javabin"><img src="/img/social/facebook.png" /></a>
-      <a href="http://www.youtube.com/user/JavaZoneNo"><img src="/img/social/youtube.png" /></a>
-      <a href="http://vimeo.com/javazone/videos"><img src="/img/social/vimeo.png" /></a>
+        <a href="http://twitter.com/#!/javazone"><img src="/img/social/twitter.png" /></a>
+        <a href="http://www.facebook.com/javabin"><img src="/img/social/facebook.png" /></a>
+        <a href="http://www.youtube.com/user/JavaZoneNo"><img src="/img/social/youtube.png" /></a>
+        <a href="http://vimeo.com/javazone/videos"><img src="/img/social/vimeo.png" /></a>
       </p>
-      <p class="text"><a href="http://java.no">Brought to you by the great people of JavaBin</a>. Design by <a href="http://accenture.com">Accenture Creative Services</a></p>
+      <p class="text">
+        JavaZone.no - 
+        Designed and shipped in cooperation with <strong><a href="http://www.accenture.no">Accenture Creative Services</a></strong> |
+        All images and text are Creative Commons BY-SA 2.0 Licensed
+      </p>
     </div>
 
     </div></div></div>
