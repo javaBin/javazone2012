@@ -34,10 +34,6 @@ class default(val contextPath: String, val topPages: List[CmsEntry], val aboutJa
       <img src={contextPath + "/img/longtext.png"} id="longtext" />
     </a>
 
-    <a class="max" href={contextPath}>
-      <img src={contextPath + "/img/longtext-vertical.png"} class="hide" id="longtext-vertical" />
-    </a>
-
     <a class="med" href={contextPath}>
       <img src={contextPath + "/img/text.png"} id="text-horizontal" />
     </a>
@@ -64,10 +60,10 @@ class default(val contextPath: String, val topPages: List[CmsEntry], val aboutJa
 
     <div id="footer">
       <p>
-      <a href="http://twitter.com/#!/javazone"><img src={contextPath + "/img/social/twitter.png"}/></a>
-      <a href="http://www.facebook.com/javabin"><img src={contextPath + "/img/social/facebook.png"}/></a>
-      <a href="http://www.youtube.com/user/JavaZoneNo"><img src={contextPath + "/img/social/youtube.png"}/></a>
-      <a href="http://vimeo.com/javazone/videos"><img src={contextPath + "/img/social/vimeo.png"}/></a>
+        <a href="http://twitter.com/#!/javazone"><img src={contextPath + "/img/social/twitter.png"}/></a>
+        <a href="http://www.facebook.com/javabin"><img src={contextPath + "/img/social/facebook.png"}/></a>
+        <a href="http://www.youtube.com/user/JavaZoneNo"><img src={contextPath + "/img/social/youtube.png"}/></a>
+        <a href="http://vimeo.com/javazone/videos"><img src={contextPath + "/img/social/vimeo.png"}/></a>
       </p>
       <p class="text">JavaZone.no - shipped in cooperation with <a href="http://accenture.no" target="_blank">Accenture Creative Services</a></p>
       <p class="text">All images and text are Creative Commons BY-SA 2.0 Licensed</p>
