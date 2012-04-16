@@ -201,9 +201,11 @@ class JzPortalPlan extends Plan {
   }
 
   def renderNewsList(contextPath: String, start: Option[String]) = {
-    val offset = start.flatMap(parseInt).getOrElse(0)
+//    val offset = start.flatMap(parseInt).getOrElse(0)
+    val offset = 0
 
-    val response = cmsClient.fetchEntriesForCategory("news", offset, pageSize)
+    var response = cmsClient.fetchEntriesForCategory("news", offset, pageSize)
+    response = response.copy(page = response.page.reverse)
     val tweets = twitterClient.currentResults
 
     news(default(contextPath), twitterSearchHtmlUrl, tweets, response)

@@ -2,11 +2,13 @@ package no.java.jzportal.twitter
 
 import java.net._
 import org.slf4j.Logger
+import org.apache.abdera.i18n.iri._
 import org.apache.abdera.model._
 import org.apache.abdera.protocol.client._
 import org.joda.time.{Period, Minutes, DateTime => DT}
 import scala.actors._
 import scala.collection.JavaConversions._
+import scala.util.control.Exception._
 
 trait TwitterSearch {
   def searchUrlHtml: Option[URL]
@@ -81,9 +83,11 @@ object TwitterClient {
 
   object Update
 
-  def handleFeed(now: DT, feed: Feed): List[JzTweet] = {
+  def handleFeed(now: DT, feed: Feed): List[JzTweet] =
     collectionAsScalaIterable(feed.getEntries).flatMap(entryToJzTweet(now)).toList
-  }
+
+  def iriToUrl(iri: IRI) =
+    catching[URL](classOf[IllegalArgumentException]).opt({iri.toURL})
 
   def entryToJzTweet(now: DT)(entry: Entry): Option[JzTweet] = for {
     published <- Option(entry.getPublished)
@@ -91,7 +95,7 @@ object TwitterClient {
     htmlLink <- findLinkByMimeType(links, "text/html")
     author <- Option(entry.getAuthor)
     handleName <- Option(author.getName) if handleName.endsWith(")")
-    handleUri <- Option(author.getUri)
+    handleUrl <- Option(author.getUri).flatMap(iriToUrl)
     // Those without an image get a stock image from Twitter
     handleImage <- findLinkByRel(links, "image")
     i = handleName.indexOf(' ') if i > 0 && i < handleName.length - 2
@@ -99,20 +103,19 @@ object TwitterClient {
     name = handleName.substring(i + 2, handleName.length - 1) if name.trim().length() > 1
     text = entry.getTitle.toString if name.trim().length() > 1
     period = new Period(new DT(published.getTime), now)
-  } yield {
-    JzTweet(handle, handleUri.toURL, handleImage,
-      name, text, htmlLink, formatToTimeAgo(period))
-  }
+  } yield JzTweet(handle, handleUrl, handleImage, name, text, htmlLink, formatToTimeAgo(period))
 
   def findLinkByMimeType(links: Iterable[Link], mimeType: String): Option[URL] = for {
     link <- links.find(link => mimeType.equals(String.valueOf(link.getMimeType)))
     href <- Option(link.getHref)
-  } yield href.toURL
+    url <- iriToUrl(href)
+  } yield url
 
   def findLinkByRel(links: Iterable[Link], rel: String): Option[URL] = for {
     link <- links.find(link => rel.equals(String.valueOf(link.getRel)))
     href <- Option(link.getHref)
-  } yield href.toURL
+    url <- iriToUrl(href)
+  } yield url
 
   def formatToTimeAgo(period: Period): String =
     if (period.getYears > 0) period.getYears + " years ago"
