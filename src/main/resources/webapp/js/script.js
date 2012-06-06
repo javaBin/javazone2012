@@ -61,12 +61,13 @@ var daysUntilJavazoneInBinary = function() {
 };
 
 var changeHeaderColors = function() {
+    var color = $("body").hasClass("alternate") ? "#ff58a7" : "#00aced";
     daysLeftBinary = daysUntilJavazoneInBinary();
 
     var menuElementToModify = 7;
     for (var i = daysLeftBinary.length - 1; i >= 0; i--) {
         if(daysLeftBinary[i] == 1) {
-            $("#menuelement-" + menuElementToModify).css({backgroundColor: "#00aced"},{queue:false,duration:100});
+            $("#menuelement-" + menuElementToModify).css({backgroundColor: color},{queue:false,duration:100});
         } 
         menuElementToModify--;
     }

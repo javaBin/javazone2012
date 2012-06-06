@@ -30,16 +30,16 @@ class default(val contextPath: String, val topPages: List[CmsEntry], val aboutJa
     <div class="max" id="side"></div>
 
 
-    <a class="max" href={contextPath}>
-      <img src={contextPath + "/img/longtext.png"} id="longtext" />
+    <a class="max" href={contextPath} id="longtext">
+      <div></div>
     </a>
 
-    <a class="med" href={contextPath}>
-      <img src={contextPath + "/img/text.png"} id="text-horizontal" />
+    <a class="med" href={contextPath} id="text-horizontal">
+      <div></div>
     </a>
 
-    <a href={contextPath}>
-      <img src={contextPath + "/img/splashlogo.png"} id="splashlogo" />
+    <a href={contextPath} id="splashlogo">
+      <div></div>
     </a>
 
     <div id="c1"><div id="c2"><div id="c4">

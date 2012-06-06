@@ -32,7 +32,7 @@ body, html {
     margin:0;
     padding:0;
     height:100%;
-    background:#222 url("/img/tile.png");
+    background:#222 url("../img/tile.png");
     color:#fff;
     font-size:18px;
 }
@@ -49,6 +49,12 @@ a, a:link, a:visited {
     color:#00aced;
     text-decoration:none;
 }
+
+/*
+body.alternate a, body.alternate a:link, body.alternate a:visited {
+    color:#ff2189;
+}
+*/
 
 a:hover {
     color:#88dd00;
@@ -115,6 +121,10 @@ hr {
     box-shadow:0 2px 3px rgba(0,0,0,0.2);
     font-size:18px;
     opacity:0.9;
+}
+
+body.alternate #menu div {
+    background:#ff2189;
 }
 
 #menu div.high {
@@ -271,7 +281,7 @@ hr {
     position:fixed;
     bottom:0;
     left:0;
-    background:url("/img/tbg.png") fixed bottom center no-repeat;
+    background:url("../img/tbg.png") fixed bottom center no-repeat;
     height:100%;
     width:100%;
 }
@@ -310,7 +320,7 @@ hr {
 
 #footer {
     padding-top:25px;
-    padding-bottom: 0;
+    padding-bottom: 50px;
     font-size:14px;
 }
 
@@ -379,15 +389,26 @@ hr {
         padding:600px 50px 50px 50px;
     }
 
+    body.alternate #minsplash {
+        background:url("../img/splashclean-alternate.jpg") top center no-repeat;
+    }
+
     #sidesplashtext {
         display:none;
     }
 
-    #splashlogo {
+    #splashlogo div {
+        background:url("../img/splashlogo.png") top center no-repeat;
+        width:337px;
+        height:306px;
         position:absolute;
         top:20px;
         left:50%;
         margin-left:-170px;
+    }
+
+    body.alternate #splashlogo div {
+        background:url("../img/splashlogo-alternate.png") top center no-repeat;
     }
 
     #line {
@@ -514,28 +535,36 @@ hr {
         z-index:0;
     }
 
-    #splashlogo {
+    body.alternate #splash {
+        background:url("../img/splashclean-alternate.jpg") top center no-repeat;
+    }
+
+    #splashlogo div {
+        background:url("../img/splashlogo.png") top center no-repeat;
         position:absolute;
         top:100px;
         left:50%;
         margin-left:-400px;
+        width:337px;
+        height:306px;
     }
 
-    #text-horizontal {
+    body.alternate #splashlogo div {
+        background:url("../img/splashlogo-alternate.png") top center no-repeat;
+    }
+
+    #text-horizontal div {
+        background:url("../img/text.png") top center no-repeat;
         position:absolute;
         top:185px;
         left:50%;
         margin-right:-400px;
+        width:415px;
+        height:193px;
     }
 
-
-    #top {
-        position:absolute;
-        width:100%;
-        height:590px;
-        margin:50px auto 0 auto;
-        background:url("../img/top.png") top left repeat-x;   
-        background-position:fixed; 
+    body.alternate #text-horizontal div {
+        background:url("../img/text-alternate.png") top center no-repeat;
     }
 
 }
@@ -563,6 +592,10 @@ hr {
         z-index:1;
     }
 
+    body.alternate #sidesplash {
+        background:url("../img/sidesplash-alternate.png") 0 0 no-repeat;
+    }
+
     #side {
         position:fixed;
         top:0;
@@ -574,19 +607,36 @@ hr {
         z-index:0;
     }
 
-    #splashlogo {
+    body.alternate #side {
+        background:url("../img/side-alternate.png") 0px 0px repeat-y;
+    }
+
+    #splashlogo div {
+        background:url("../img/splashlogo-small.png") top center no-repeat;
         position:absolute;
+        width:280px;
+        height:254px;
         left:1060px;
         top:40px;
-        width:280px;
         z-index:2;
     }
 
-    #longtext {
+    body.alternate #splashlogo div {
+        background:url("../img/splashlogo-small-alternate.png") top center no-repeat;
+    }
+
+    #longtext div {
+        background:url("../img/longtext.png") top left no-repeat;
+        width:910px;
+        height:118px;
         position:absolute;
         top:30px;
         left:187px;
         z-index:100;
+    }
+
+    body.alternate #longtext div {
+        background:url("../img/longtext-alternate.png") top center no-repeat;
     }
 
     #menu {
@@ -636,10 +686,6 @@ hr {
 
     #partners a {
         width:170px;
-    }
-
-    #footer {
-        padding-left:200px;
     }
 
     #footer p {
